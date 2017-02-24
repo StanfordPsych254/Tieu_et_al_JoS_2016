@@ -32,17 +32,28 @@ body {
 input, select, button {font-family: Georgia, serif; font-size: 14px;}
 
 input[type="radio"] {
-  margin: 10px;
+    margin: 5px;
+    vertical-align: baseline;
 }
 
-#stage label {
+.judgements{
+    font-size: 15px;
+}
+
+#text-only {
+    margin-top: 20px;
+}
+
+.judgements label {
   cursor: pointer;
   display: inline-block;
   padding: 6px;
 }
-
-#stage label:hover {
-  background: #efefef;
+.judgements label:hover {
+    cursor: pointer;
+    display: inline-block;
+    padding: 6px;
+    background: #efefef;
 }
 
 #demographics label {
@@ -86,12 +97,14 @@ button[disabled] {
   margin-bottom: 1em;
 }
 
-#instructions, #instructions2, #finished {
+#instructions, #instructions1 #instructions2, #instructions3, #finished {
   text-align: center;
 }
 
 #debriefing,
+#instructions1,
 #instructions2,
+#instructions3,
 #finished {
   margin-top: 3em;
 }
@@ -106,10 +119,11 @@ button[disabled] {
 }
 
 .block-text {
-  width: 500px;
-  text-align: justify;
-  margin: 0 auto;
-  margin-bottom: 1em;
+    width: 500px;
+    text-align: justify;
+    margin: 0 auto;
+    margin-bottom: 1em;
+    font-size: 15px;
 }
 
 #legal {
@@ -131,10 +145,11 @@ td {
   width: 60px;
 }
 
-#sent_question {
-  font-size: 16px;
+.prompt p {
+    font-size: 12pt;
+    font-weight: bold;
+    padding: 15px;
 }
-
 
 #debriefing textarea {
   height: 5em;

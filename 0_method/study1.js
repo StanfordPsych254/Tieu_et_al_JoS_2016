@@ -68,36 +68,38 @@ faces = shuffle(faces);
 var totalTrials = faces.length;
 
 // Initialize trial to trustworthy or attractive
-var type = Math.random();
-if (type >= 0.5) {
-  type = 'attractive';
-  $('.attractiveness-instr').show();
-  $('.trustworthy-instr').hide();
-} else {
-  type = 'trustworthy';
+//var type = Math.random();
+//if (type >= 0.5) {
+//  type = 'attractive';
+//  $('.attractiveness-instr').show();
+//  $('.trustworthy-instr').hide();
+//} else {
+//  type = 'trustworthy';
   $('.attractiveness-instr').hide();
   $('.trustworthy-instr').show();
-}
+//}
 
-// Show the instructions slide -- this is what we want subjects to see first.
+
+// ############################## The Experiment Code and Functions ##############################
+
+// Show the first slide
 showSlide("instructions");
 
-// ############################## The main event ##############################
 var experiment = {
 
-    // The object to be submitted.
+// The data structure that records the responses to be sent to mTurk
     data: {
-      type: [],
+//      type: [],
       age: [],
       gender: [],
       education: [],
 //      race: [],
-      trial: [],
-      rating: [],
-      elapsed_ms: [],
-      num_errors: [],
-      expt_aim: [],
-      expt_gen: [],
+      trial: [], // what trial/video was presented to the participant
+      rating: [], // response
+      elapsed_ms: [], // time taken to provide an answer
+      num_errors: [], // number of times participant attempted to go to the next slide without providing an answer
+      expt_aim: [], // participant's comments on the aim of the study
+      expt_gen: [], // participant's general comments
       user_agent: [],
       window_width: [],
       window_height: [],
@@ -106,7 +108,7 @@ var experiment = {
     start_ms: 0,  // time current trial started ms
     num_errors: 0,    // number of errors so far in current trial
 
-    // end the experiment
+// END FUNCTION: The function to call when the experiment has ended
     end: function() {
       showSlide("finished");
       setTimeout(function() {
@@ -114,7 +116,7 @@ var experiment = {
       }, 1500);
     },
 
-    // LOG RESPONSE
+// LOG RESPONSE
     log_response: function() {
       var response_logged = false;
       var elapsed = Date.now() - experiment.start_ms;
@@ -150,7 +152,7 @@ var experiment = {
       }
     },
 
-    // The work horse of the sequence - what to do on every trial.
+// NEXT FUNCTION: The work horse of the sequence - what to do on every trial.
     next: function() {
       // Allow experiment to start if it's a turk worker OR if it's a test run
       if (window.self == window.top | turk.workerId.length > 0) {
@@ -194,18 +196,18 @@ var experiment = {
 
     // submitcomments function
     submit_comments: function() {
-      var races = document.getElementsByName("race[]");
-      for (i = 0; i < races.length; i++) {
-        if (races[i].checked) {
-          experiment.data.race.push(races[i].value);
-        }
-      }
+//      var races = document.getElementsByName("race[]");
+//      for (i = 0; i < races.length; i++) {
+//        if (races[i].checked) {
+//          experiment.data.race.push(races[i].value);
+//        }
+//      }
       experiment.data.age.push(document.getElementById("age").value);
       experiment.data.gender.push(document.getElementById("gender").value);
       experiment.data.education.push(document.getElementById("education").value);
       experiment.data.expt_aim.push(document.getElementById("expthoughts").value);
       experiment.data.expt_gen.push(document.getElementById("expcomments").value);
-      experiment.data.type.push(type);
+//      experiment.data.type.push(type);
       experiment.data.user_agent.push(window.navigator.userAgent);
       experiment.end();
     }
@@ -226,10 +228,10 @@ $(function() {
     },
     submitHandler: experiment.submit_comments
   });
-  $('#race_group input[value=no_answer]').click(function() {
-    $('#race_group input').not('input[value=no_answer]').attr('checked', false);
-  });
-  $('#race_group input').not('input[value=no_answer]').click(function() {
-    $('#race_group input[value=no_answer]').attr('checked', false);
-  });
+//  $('#race_group input[value=no_answer]').click(function() {
+//    $('#race_group input').not('input[value=no_answer]').attr('checked', false);
+//  });
+//  $('#race_group input').not('input[value=no_answer]').click(function() {
+//    $('#race_group input[value=no_answer]').attr('checked', false);
+//  });
 });

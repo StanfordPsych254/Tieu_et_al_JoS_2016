@@ -1,0 +1,125 @@
+---
+title: "A replication of @tieu2016"
+bibliography: library.bib
+document-params: "10pt, letterpaper"
+
+author: "Masoud Jasbi"
+
+abstract: 
+    "Two recent studies report children interpreting disjunction words similar to conjunction words. @tieu2016 @Singh2016 Here we replicate @tieu2016. The results show that X!"
+
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#loading the required packages
+library(tidyverse)
+library(bootstrap)
+library(ggthemes)
+
+theta <- function(x,xdata) {mean(xdata[x])}
+ci.low <- function(x) {
+  quantile(bootstrap(1:length(x),1000,theta,x)$thetastar,.025)}
+ci.high <- function(x) {
+  quantile(bootstrap(1:length(x),1000,theta,x)$thetastar,.975)}
+```
+
+```{r original_data_wrangling, include=FALSE}
+original_data_raw <- read_csv("../0_original_study/TYCRSC_AcqDisj.csv")
+
+#Exclusions (original code)
+Y <- original_data_raw
+############################### Original code
+
+infos.subject<-data.frame(
+PARTICIPANT=tapply(as.character(Y$participant), Y$participant, max),
+TYPE=tapply(as.character(Y$AgeGroup), Y$participant, max),
+LANG=tapply(as.character(Y$Lang), Y$participant, max),
+AGE=tapply(Y$ageD, Y$participant, max),
+SITE=tapply(as.character(Y$exp.site), Y$participant, max),
+VERSION=tapply(as.character(Y$version), Y$participant, max),
+COMPLEX=tapply((Y$Complex), Y$participant, max)
+)
+
+infos.subject$Correct<-tapply(Y$correct[Y$Condition=="Control"],Y$participant[Y$Condition=="Control"],mean,na.rm=T)
+
+excluded<-infos.subject$PARTICIPANT[infos.subject$Correct<.7]
+
+# Remove training items and excluded participants
+
+Y<-subset(Y,Condition!="Training" & !participant%in%excluded)
+
+# Prepare data for mixed-models:
+data<-subset(Y,Condition!="Control"&response!=0.5)
+################################# END of ORIGINAL CODE
+
+original_data <- data
+```
+
+The key statistical test that will be a mixed-effects logistic regression with disjunction type as a fixed effect and with the random effects of subject and items. The DV has the two levels of Right and Wrong.
+
+# Introduction 
+
+@tieu2016 investigated children's interpretation of the french simple and complex disjunction words *ou*/*soit ... soit* as well as the Japanese ones *ka*/*ka...ka*. Their claims hold for disjunction words crosslinguistically so in this project I investigate English speaking children's interpretation of *or*/*either ... or*. The authors used a Truth Value Judgement Task (Crain and Thornton 1998) in the form of a guessing game. Videos of a puppet giraffe making predictions about a story were recorded. In each trial, participants saw a picture and heard a story. Then the pre-recorded videos were played: the puppet appeared on the laptop screen and made a guess about what happens next in the story. Then participants saw the rest of the story and had to decide whether the puppet's guess was correct or not by stamping under a happy or sad face on a scorecard. 
+
+# Experiment
+
+## Method
+### Participants
+Table X summarizes the participant information for both the original study and the replication reported here. 
+
+```{r adults_patterns, results="asis", echo=FALSE}
+participant_table <-
+  original_data %>%
+  group_by(Lang, AgeGroup) %>% # group participants based on language and age (adult vs. child)
+  summarise(N = length(unique(participant))) # number of participants in each group
+
+# create a table for the number of participants in each group
+participant_xtable <- xtable::xtable(participant_table, 
+                      caption = "The number of participants and the age ranges.")
+
+print(participant_xtable, type="latex", comment = F, table.placement = "h", floating.environment = "table")
+```
+
+### Procedure
+
+@tieu2016 used a modified version of the Truth Value Judgement Task (TVJT) in Prediction Mode. TVJTs can be designed in two general modes: Description and Prediction [@crain1998investigations]. Both modes involve a short story. In description mode, participants are asked to assess whether a target sentence is a right description for a story. In prediction mode, the target sentence is produced mid-story as a prediction of how the story will unfold. Participants are asked to judge whether the prediction was right.  
+
+### Materials
+
+## Results
+
+```{r figure, results="asis", echo=FALSE}
+plot_data <-  
+original_data %>%
+group_by(participant, Lang, AgeGroup, Complex, Condition, response) %>%
+summarise(counts = n()) %>% #count the rows
+spread(response, counts) %>%
+replace(is.na(.), 0) %>%
+mutate(total = `0` + `1`) %>%
+gather(trial, counts, `0`, `1`) %>%
+mutate(prop = counts / total) %>%
+  group_by(Lang, AgeGroup, Complex, Condition, trial) %>%
+  summarize(cih = ci.high(prop),
+            cil = ci.low(prop),
+            prop = mean(prop))
+
+ggplot(filter(plot_data, trial=="1"), 
+       aes(x=Condition, y=prop,fill=AgeGroup)) + 
+  geom_bar(stat="identity", width = 0.6, position="dodge") + 
+  geom_linerange(aes(ymax = cih, ymin = cil), position = position_dodge(width = 0.6)) + 
+  facet_grid(Lang~Complex) + 
+#  guides(fill=FALSE) + 
+  labs(title = "", x = "", y = "") + 
+  theme_few() + 
+  theme(axis.text.x = element_text(angle=90, hjust = 1, vjust = .5)) +
+  scale_fill_solarized()
+
+```
+
+
+# References

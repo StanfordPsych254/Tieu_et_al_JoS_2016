@@ -1,5 +1,5 @@
 
-<!-- ## Preamble -->
+<!-------------------------------------- ## Preamble -------------------------------------------->
 <html>
     
 <head>
@@ -16,16 +16,15 @@
 
 <body>
 
-<!-- Instruction Slide 1 -->
+<!------------------------------------ First Page --------------------------------------->
 <div class="slide" id="instructions">
   <br>
   <img src="images/stanford.png" alt="Stanford University">
   <h3 id='logo-text'>Stanford Language and Cognition Lab</h3>
   <div class="block-text trustworthy-instr">
-    <p>In this study, we ask you to watch some videos and answer a question for each video. Each video narrates a different story. In the middle of the story, a puppet named Jazzy will appear on the screen and guess how the story ends. Tell us if Jazzy's guess was right. This study is originally designed for childrn.</p>
+    <p>In this study, we ask you to watch some videos and answer a question for each video. Please make sure that your device's sound settings are enabled and the volume is adjusted. This study is designed for childrn as well as adults. Before we start the study, click on Next to see some examples. </p>
   </div>
 <!--
-
     <div class="block-text attractiveness-instr">
   <p>Many times we meet strangers for the first time and form our first impression
   based on their faces.  There are faces that look attractive and there are faces
@@ -42,37 +41,140 @@
   </p>
 -->
 
-  <button type="button" onclick="this.blur(); showSlide('instructions2')">Next</button>
+  <button type="button" onclick="this.blur(); showSlide('instructions1')">Next</button>
   
   <p class="block-text"><br> <b> Note: you won't be able to preview this HIT before accepting it because it's so short. </b></p>
   
-  <p class="block-text" id="legal">By answering the
-  following questions, you are participating in a study being performed by
-  cognitive scientists in the Stanford Department of Psychology. If you have
-  questions about this research, please contact us at 
-  <a href="mailto://languagecoglab@gmail.com.">languagecoglab@gmail.com</a>.
-  You must be  at least 18 years old to participate. Your participation in 
-  this research is voluntary. You may decline to answer any or all of the 
-  following questions. You may decline further participation, at any time, 
-  without adverse consequences. Your anonymity is assured; the researchers 
-  who have requested your participation will not receive any personal information 
-  about you. Note however that we have recently been made aware that your public 
-  Amazon.com profile can be accessed via your worker ID if you do not choose 
-  to opt out. If you would like to opt out of this feature, you may follow instructions available 
-  <a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=16465241">here</a>.</p>
+  <p class="block-text" id="legal">By answering the following questions, you are participating in a study being performed by cognitive scientists in the Stanford Department of Psychology. If you have questions about this research, please contact us at <a href="mailto://languagecoglab@gmail.com.">languagecoglab@gmail.com</a>. You must be  at least 18 years old to participate. Your participation in this research is voluntary. You may decline to answer any or all of the following questions. You may decline further participation, at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you. Note however that we have recently been made aware that your public Amazon.com profile can be accessed via your worker ID if you do not choose to opt out. If you would like to opt out of this feature, you may follow instructions available <a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=16465241">here</a>.</p>
 </div>
 
-<!-- Instruction Slide 2 -->
+<!------------------------------------- Introduction Video ---------------------------------------->
+    
+<div class="slide" id="instructions1">
+
+    <!--Instruction text-->
+   
+    <p class="block-text"> Click on &#9658; to watch the introduction video. When done, answer the question under the video, then click "Next" to see an example trial.
+    </p>
+
+    <!--Introduction Video-->
+
+    <div align="center">
+        <video id="training1_vid1" width="65%" height="65%" src="images/video1.mp4" controls> 
+        </video>
+    </div>
+
+    <!--prompt sentence-->
+    
+    <div align="center" class="prompt">
+        <p> Was Raffie Ready?</p>
+    </div>
+    
+    <!--judgement buttons-->
+
+    <table align = "center" class="judgements">
+        <tr>
+            <td align="center"><label><input type="radio" name="judgment" value="0">No</label></td>
+            <td align="center"><label><input type="radio" name="judgment" value="1">Yes</label></td>      
+        </tr>
+        <tr> <td colspan="2" align="center"> 
+            <button type="button" onclick="this.blur(); showSlide('instructions2')">Next</button>
+            </td>
+        </tr>
+    </table>
+    
+</div>
+
+
+<!------------------------------------- Instruction Slide 2 ---------------------------------------->
     
 <div class="slide" id="instructions2">
-  <p class="block-text">Please read the question again in every new screen and
-  mark your answer for each face before clicking "Next". You will not be able
-  to go back to previous screens.
-  </p>
-  <button type="button" onclick="this.blur(); experiment.next()">Start</button>
+
+    <!--Instruction text-->
+   
+    <p class="block-text"> Here is an example trial.
+    </p>
+
+    <!--Training Video 1-->
+
+    <div align="center">
+        <video id="training1_vid1" width="65%" height="65%" src="images/video1.mp4" controls> 
+        </video>
+    </div>
+
+    <!--prompt sentence-->
+    
+    <div align="center" class="prompt">
+        <p> Did Raffie guess right?</p>
+    </div>
+    
+    <!--judgement buttons-->
+
+    <table align = "center" class="judgements">
+        <tr>
+            <td align="center"><label><input type="radio" name="judgment" value="0">No</label></td>
+            <td align="center"><label><input type="radio" name="judgment" value="1">Yes</label></td>      
+        </tr>
+        <tr> <td colspan="2" align="center"> 
+            <button type="button" onclick="this.blur(); showSlide('instructions3')">Next</button>
+            </td>
+        </tr>
+    </table>
+    
 </div>
 
-<!-- The stage slide. -->
+<!------------------------------------ Instruction Slide 3 -------------------------------------------->
+
+<div class="slide" id="instructions3">
+    
+    <!--Instruction text-->
+   
+    <p class="block-text"> Another example.
+    </p>
+
+    <!--Training Video 2-->
+
+    <div align="center">
+        <video id="training1_vid2" width="65%" height="65%" src="images/video2.mp4" controls> 
+        </video>
+    </div>
+
+    <!--prompt sentence-->
+    
+    <div align="center" class="prompt">
+        <p> Did Raffie guess right?</p>
+    </div>
+    
+    <!--judgement buttons-->
+
+    <table align = "center" class="judgements">
+        <tr>
+            <td align="center"><label><input type="radio" name="judgment" value="0">No</label></td>
+            <td align="center"><label><input type="radio" name="judgment" value="1">Yes</label></td>      
+        </tr>
+        <tr> <td colspan="2" align="center"> 
+            <button type="button" onclick="this.blur(); showSlide('instructions4')">Next</button>
+            </td>
+        </tr>
+    </table>
+
+</div>
+
+<!------------------------------------ Instruction Slide 3 -------------------------------------------->
+
+<div class="slide" id="instructions4">
+    
+    <!--Instruction text-->
+   
+    <p class="block-text" id="text-only"> Great! We are done with our examples! Click Start to begin the study!
+    </p>
+    
+    <div align="center">
+    <button type="button" onclick="this.blur(); experiment.next()">Start</button>
+    </div>
+</div>
+
+<!------------------------------------- The stage slides ----------------------------------------------->
 <div class="slide" id="stage">
   
 <div class="progress">
@@ -82,22 +184,21 @@
   
 <div id="stage-content">
 <div align="center">
-    <iframe id="face"/ width="65%" height="65%" 
-            src="https://www.youtube.com/embed/XGSy3_Czz8k">
-    </iframe>
+    <video id="face"/ width="65%" height="65%" controls>
+    </video>
 </div>
 <br>
 <div align="center">
   <h5><b>Did Raffie guess right?</b></h5><br>
 </div>
 
-<table align = "center"><tr>
+<table align = "center" class="judgements"><tr>
 <td align="center">
   <tr>
       
     <td> </td>
-    <td><label><input type="radio" name="judgment" value="wrong">No</label></td>
-    <td><label><input type="radio" name="judgment" value="right">Yes</label></td>      
+    <td><label><input type="radio" name="judgment" value="0">No</label></td>
+    <td><label><input type="radio" name="judgment" value="1">Yes</label></td>      
     <td>&nbsp;&nbsp;&nbsp;</td>
 
   </tr>
@@ -116,7 +217,8 @@
  </div>
 </div>
 
- <!-- The debriefing slide. -->
+<!---------------------------------- The debriefing slide. -------------------------------------------->
+
  <form id="demographics">
  <div class="slide" id="debriefing">
    <div class="question">
@@ -217,18 +319,14 @@
 
    <div class="question">
      <p>
-       <b>What is your highest level of education completed?</b>
+       <b>Have you ever learned formal logic before (either as part of a course or casual reading)?</b>
        <label id="education-error" class="error" for="education">Please choose an option</label>
      </p>
      <select name="education" id="education" form="demographics" required>
        <option value="">Choose a level</option>
-       <option value="gradeSchool">Grade school</option>
-       <option value="highSchool">High school</option>
-       <option value="someCollege">Some college</option>
-       <option value="4year">4-year college</option>
-       <option value="someGrad">Some graduate school</option>
-       <option value="grad">Graduate degree</option>
-       <option value="no_answer">Prefer not to answer</option>
+       <option value="Yes">Yes</option>
+       <option value="No">No</option>
+<!--       <option value="no_answer">Prefer not to answer</option>-->
      </select>
    </div>
 
@@ -265,17 +363,19 @@
   <div align="center">
     <button type="submit" id="debriefsubmit">Submit</button>
   </div>
-  </form>
-</div>
-  
-<!-- The finish slide. -->
+
+     </div>
+</form>
+
+<!--------------------------------------------- The finish slide. ---------------------------------------------->
 <div class="slide" id="finished">
   <p class="block-text">
-  Thank you for participating in the study. The purpose of the study is to understand how children learn the meaning of the logical word "or". In this study, we asked participants to judge whether statements with "or" were right or wrong depending on what happened in the story. We expect to find that participants judge a statement with "or" as right when only one event was true but wrong when both were true. If you would like to learn more about this topic, please email masoudj@stanford.edu for some references.
+  Thank you for participating in the study. The purpose of the study is to understand how children learn the meaning of the logical word "or". In this study, we ask participants to judge whether statements with "or" were right or wrong depending on what happened in the story. If you would like to learn more about this topic, please email masoudj@stanford.edu for some references.
   </p>
 </div>
 
 <script src="study1.js"></script>
 
 </body>
+
 </html>
