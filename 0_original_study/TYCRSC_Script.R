@@ -12,7 +12,6 @@ library(shape)
 
 Y<-read.csv("http://semanticsarchive.net/Archive/mE4YmYwN/TYCRSC_AcqDisj.csv")
 
-
 infos.subject<-data.frame(
 PARTICIPANT=tapply(as.character(Y$participant), Y$participant, max),
 TYPE=tapply(as.character(Y$AgeGroup), Y$participant, max),

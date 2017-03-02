@@ -21,6 +21,8 @@ library(tidyverse)
 library(bootstrap)
 library(ggthemes)
 library(forcats)
+library(xtable)
+library(lme4)
 
 # Functions for bootstrapping confidence intervals:
 theta <- function(x,xdata) {mean(xdata[x])}
@@ -34,8 +36,9 @@ ci.high <- function(x) {
 original_data_raw <- read_csv("../0_original_study/TYCRSC_AcqDisj.csv")
 
 #Exclusions (original code)
-Y <- original_data_raw
+
 ############################### Original code
+Y<-read.csv("http://semanticsarchive.net/Archive/mE4YmYwN/TYCRSC_AcqDisj.csv")
 
 infos.subject<-data.frame(
 PARTICIPANT=tapply(as.character(Y$participant), Y$participant, max),
@@ -58,8 +61,12 @@ Y<-subset(Y,Condition!="Training" & !participant%in%excluded)
 # Prepare data for mixed-models:
 data<-subset(Y,Condition!="Control"&response!=0.5)
 ################################# END of ORIGINAL CODE
-
 original_data <- data
+
+original_data$Complex <- as.factor(original_data$Complex)
+levels(original_data$Complex) <- c("Simple","Complex")
+
+original_data <- rename(original_data, Disjunct=Complex)
 ```
 
 The key statistical test that will be a mixed-effects logistic regression with disjunction type as a fixed effect and with the random effects of subject and items. The DV has the two levels of Right and Wrong.
@@ -77,14 +84,17 @@ Table X summarizes the participant information for both the original study and t
 ```{r adults_patterns, results="asis", echo=FALSE}
 participant_table <-
   original_data %>%
-  group_by(Lang, AgeGroup, Complex) %>% # group participants based on language and age (adult vs. child)
-  summarise(N = length(unique(participant))) # number of participants in each group
-
+  group_by(Lang, AgeGroup, Disjunct) %>% # group participants based on language and age (adult vs. child)
+  summarise(N = length(unique(participant))) %>% # number of participants in each group
+  spread(AgeGroup,N) %>%
+  rename(Adult = adult, Child=child, Language=Lang)
+rownames(participant_table) <- NULL
 # create a table for the number of participants in each group
-participant_xtable <- xtable::xtable(participant_table, 
+
+participant_xtable <- xtable(participant_table,
                       caption = "The number of participants and the age ranges.")
 
-print(participant_xtable, type="latex", comment = F, table.placement = "h", floating.environment = "table")
+print.xtable(participant_xtable, include.names=FALSE, type="latex", comment = F, table.placement = "h", floating.environment = "table")
 ```
 
 ### Procedure
@@ -95,37 +105,90 @@ print(participant_xtable, type="latex", comment = F, table.placement = "h", floa
 
 ## Results
 
-```{r figure, results="asis", echo=FALSE}
+```{r figure, results="asis", echo=FALSE, fig.align="center", fig.cap="Error bars show 95\\% confidence intervals.", fig.width=6, fig.height=4}
 plot_data <-  
 original_data %>%
-group_by(participant, Lang, AgeGroup, Complex, Condition, response) %>%
+group_by(participant, Lang, AgeGroup, Disjunct, Condition, response) %>%
 summarise(counts = n()) %>% #count the rows
 spread(response, counts) %>%
 replace(is.na(.), 0) %>%
 mutate(total = `0` + `1`) %>%
 gather(trial, counts, `0`, `1`) %>%
 mutate(prop = counts / total) %>%
-  group_by(Lang, AgeGroup, Complex, Condition, trial) %>%
+  group_by(Lang, AgeGroup, Disjunct, Condition, trial) %>%
   summarize(cih = ci.high(prop),
             cil = ci.low(prop),
             prop = mean(prop))
-
-plot_data$Complex <- as.factor(plot_data$Complex)
-levels(plot_data$Complex) <- c("Simple","Complex")
 
 ggplot(filter(plot_data, trial=="1"), 
        aes(x=Condition, y=prop,fill=AgeGroup)) + 
   geom_bar(stat="identity", width = 0.6, position="dodge") + 
   geom_linerange(aes(ymax = cih, ymin = cil), position = position_dodge(width = 0.6)) + 
-  facet_grid(Lang~Complex) + 
+  facet_grid(Lang~Disjunct) + 
 #  guides(fill=FALSE) + 
   labs(title = "", x = "", y = "") + 
   theme_few() + 
   theme(text = element_text(size = 16)) +
   scale_fill_solarized()
-
 ```
 
+##Analysis
 
+```{r}
+############################### Original code
+contrasts(data$Complex)<-contr.sum(2)
+data$Condition<-factor(data$Condition)
+contrasts(data$Condition)<-contr.sum(2)
+data$AgeGroup <-factor(data$AgeGroup)
+contrasts(data$AgeGroup)<-contr.sum(2)
+data$Lang <-factor(data$Lang)
+contrasts(data$Lang)<-contr.sum(2)
+
+#################
+# 1DT comparison
+#################
+
+data1DT<-subset(data,Condition=="1DT")
+
+mod1DT<-glmer(response~AgeGroup+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data1DT)
+summary(mod1DT)
+
+model1<-glmer(response~AgeGroup+(1|participant) + (1|item.name),family=binomial(link="logit"),data= data1DT)
+
+summary(model1)
+
+mod1DT0<-glmer(response~1+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data1DT)
+
+anova(mod1DT,mod1DT0)
+
+
+#################
+# 2DT comparison
+#################
+
+data2DT<-subset(data,Condition=="2DT")
+
+
+mod2DT<-glmer(response~AgeGroup+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data2DT)
+mod2DT0<-glmer(response~1+Complex*Lang+(1|participant),family=binomial(link="logit"),control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=5e6)),data= data2DT)
+
+anova(mod2DT0,mod2DT)
+
+
+################
+# Effect of age
+################
+
+
+Z<-subset(data,AgeGroup=="child")
+Z$Age<-scale(Z$ageD)
+
+mod12DTAge<-glmer(response~Age*Condition*Complex*Lang+(1+Condition|participant),family=binomial(link="logit"),control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=5e6)),data=subset(Z))
+mod12DTAge0<-glmer(response~Condition*Complex*Lang+(1+Condition|participant),family=binomial(link="logit"),control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=5e6)),data=subset(Z))
+
+anova(mod12DTAge, mod12DTAge0)
+summary(mod12DTAge)
+
+```
 
 # References
