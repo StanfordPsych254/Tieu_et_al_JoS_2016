@@ -12,6 +12,7 @@ library(shape)
 
 Y<-read.csv("http://semanticsarchive.net/Archive/mE4YmYwN/TYCRSC_AcqDisj.csv")
 
+
 infos.subject<-data.frame(
 PARTICIPANT=tapply(as.character(Y$participant), Y$participant, max),
 TYPE=tapply(as.character(Y$AgeGroup), Y$participant, max),
@@ -27,11 +28,13 @@ infos.subject$Correct<-tapply(Y$correct[Y$Condition=="Control"],Y$participant[Y$
 
 excluded<-infos.subject$PARTICIPANT[infos.subject$Correct<.7]
 
+
 ###################################################
 # Remove training items and excluded participants
 ###################################################
 
 Y<-subset(Y,Condition!="Training" & !participant%in%excluded)
+
 
 # Prepare data for mixed-models:
 data<-subset(Y,Condition!="Control"&response!=0.5)
@@ -51,10 +54,6 @@ contrasts(data$Lang)<-contr.sum(2)
 data1DT<-subset(data,Condition=="1DT")
 
 mod1DT<-glmer(response~AgeGroup+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data1DT)
-model1<-glmer(response~AgeGroup+(1|participant) + (1|item.name),family=binomial(link="logit"),data= data1DT)
-
-summary(model1)
-
 mod1DT0<-glmer(response~1+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data1DT)
 
 anova(mod1DT,mod1DT0)
@@ -117,6 +116,8 @@ p<-ggplot(plot.data,aes(x=Xfac,y=Mean,fill=Group)) +
 	scale_y_continuous(breaks=c(0,25,50,75,100), minor_breaks=c(), limits=c(0,100)) +
 	xlab("") + ylab("% ???Yes??? response")
 print(p)
+
+
 
 #####################
 # Graph (Figure 3)

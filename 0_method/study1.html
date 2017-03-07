@@ -22,8 +22,11 @@
   <img src="images/stanford.png" alt="Stanford University">
   <h3 id='logo-text'>Stanford Language and Cognition Lab</h3>
   <div class="block-text trustworthy-instr">
-    <p>In this study, we ask you to watch some videos and answer a question for each video. Please make sure that your device's sound settings are enabled and the volume is adjusted. This study is designed for childrn as well as adults. Before we start the study, click on Next to see some examples. </p>
+    <p>Watch the instruction video. When done, click START to begin the study. </p>
   </div>
+        <div align="center" id="ytplayer">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/flg4OSEX8zo?controls=0&showinfo=0&rel=0"></iframe>
+    </div>
 <!--
     <div class="block-text attractiveness-instr">
   <p>Many times we meet strangers for the first time and form our first impression
@@ -41,7 +44,7 @@
   </p>
 -->
 
-  <button type="button" onclick="this.blur(); showSlide('instructions1')">Next</button>
+  <button type="button" onclick="this.blur(); experiment.next()">START</button>
   
   <p class="block-text"><br> <b> Note: you won't be able to preview this HIT before accepting it because it's so short. </b></p>
   
@@ -54,7 +57,7 @@
 
     <!--Instruction text-->
    
-    <p class="block-text"> Click on &#9658; to watch the introduction video. When done, answer the question under the video, then click "Next" to see an example trial.
+    <p class="block-text"> Watch the introduction video below. When done, answer the question under the video, then click "Next" to see an example trial.
     </p>
 
     <!--Introduction Video-->
@@ -97,15 +100,18 @@
 
     <!--Training Video 1-->
 
-    <div align="center">
-        <video id="training1_vid1" width="65%" height="65%" src="images/video1.mp4" preload="auto" controls> 
-        </video>
+    <div align="center" id="ytplayer">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/flg4OSEX8zo?controls=0&showinfo=0&rel=0"></iframe>
+<!--
+        <iframe id="training1_vid1" width="65%" height="65%" src="https://www.youtube.com/embed/XGSy3_Czz8k"> 
+        </iframe>
+-->
     </div>
 
     <!--prompt sentence-->
     
     <div align="center" class="prompt">
-        <p> Did Raffie guess right?</p>
+        <p> Was Raffie right?</p>
     </div>
     
     <!--judgement buttons-->
@@ -184,12 +190,12 @@
   
 <div id="stage-content">
 <div align="center">
-    <video id="face"/ width="65%" height="65%" preload="auto" controls>
-    </video>
+    <iframe id="face"/ width="560" height="315">
+    </iframe>
 </div>
 <br>
 <div align="center">
-  <h5><b>Did Raffie guess right?</b></h5><br>
+  <h5><b>Was Raffie right?</b></h5><br>
 </div>
 
 <table align = "center" class="judgements"><tr>
@@ -319,7 +325,7 @@
 
    <div class="question">
      <p>
-       <b>Have you ever learned formal logic before (either as part of a course or casual reading)?</b>
+       <b>Have you ever learned about logical conjunction (&) and disjunction (V) as part of a course or reading on math, logic, or programming ?</b>
        <label id="education-error" class="error" for="education">Please choose an option</label>
      </p>
      <select name="education" id="education" form="demographics" required>

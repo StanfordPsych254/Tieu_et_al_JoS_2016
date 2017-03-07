@@ -136,6 +136,7 @@ ggplot(filter(plot_data, trial=="1"),
 
 ```{r}
 ############################### Original code
+
 contrasts(data$Complex)<-contr.sum(2)
 data$Condition<-factor(data$Condition)
 contrasts(data$Condition)<-contr.sum(2)
@@ -151,16 +152,9 @@ contrasts(data$Lang)<-contr.sum(2)
 data1DT<-subset(data,Condition=="1DT")
 
 mod1DT<-glmer(response~AgeGroup+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data1DT)
-summary(mod1DT)
-
-model1<-glmer(response~AgeGroup+(1|participant) + (1|item.name),family=binomial(link="logit"),data= data1DT)
-
-summary(model1)
-
 mod1DT0<-glmer(response~1+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data1DT)
 
 anova(mod1DT,mod1DT0)
-
 
 #################
 # 2DT comparison
@@ -168,27 +162,14 @@ anova(mod1DT,mod1DT0)
 
 data2DT<-subset(data,Condition=="2DT")
 
-
 mod2DT<-glmer(response~AgeGroup+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data2DT)
 mod2DT0<-glmer(response~1+Complex*Lang+(1|participant),family=binomial(link="logit"),control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=5e6)),data= data2DT)
-
+summary(mod1DT)
 anova(mod2DT0,mod2DT)
 
-
-################
-# Effect of age
-################
-
-
-Z<-subset(data,AgeGroup=="child")
-Z$Age<-scale(Z$ageD)
-
-mod12DTAge<-glmer(response~Age*Condition*Complex*Lang+(1+Condition|participant),family=binomial(link="logit"),control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=5e6)),data=subset(Z))
-mod12DTAge0<-glmer(response~Condition*Complex*Lang+(1+Condition|participant),family=binomial(link="logit"),control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=5e6)),data=subset(Z))
-
-anova(mod12DTAge, mod12DTAge0)
-summary(mod12DTAge)
-
 ```
+
+@tieu2016 fitted mixed-effects logit models on the children's and adults' responses to the 1DT and 2DT conditions, with Age Group, Disjuntion Type, Language, and the interaction between Disjunction Type and Language as fixed effects. By-subject random intercepts were included as random effects. 
+
 
 # References

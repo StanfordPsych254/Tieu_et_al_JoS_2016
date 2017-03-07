@@ -51,21 +51,98 @@ $.urlParam = function(name){
 }
 
 // ############################## Configuration settings ##############################
-var faces = [];
-var NUM_TRIALS_PER_DFT = 1; // Number of times each stimulus is shown
-for (var i = 0; i < NUM_TRIALS_PER_DFT; i++) { // populates the list "faces" with as many stimuli names as trials needed
-  for (var dft = 1; dft <= 15; dft++) { // gatehering the number component of the stimuli file names
-    faces.push(dft); 
-  }
+var trials = {
+    training1: ["training_ladybug_t","https://www.youtube.com/embed/WWOkUcLHtGg?controls=0&showinfo=0&rel=0"],
+    training2: ["training_sarah_f", "https://www.youtube.com/embed/4ahnw9GLyDg?controls=0&showinfo=0&rel=0"],
+    filler_rabbit_t: ["filler_rabbit_t","https://www.youtube.com/embed/BhJdqpXyE3c?controls=0&showinfo=0&rel=0"],
+    filler_rabbit_f: ["filler_rabbit_f","https://www.youtube.com/embed/6bf_dLK6hVM?controls=0&showinfo=0&rel=0"],
+    filler_pig_t: ["filler_pig_t","https://www.youtube.com/embed/Z9nrpUi0BJE?controls=0&showinfo=0&rel=0"],
+    filler_pig_f: ["filler_pig_f","https://www.youtube.com/embed/HfE-1Avyiz0?controls=0&showinfo=0&rel=0"],
+    filler_monkey_t: ["filler_monkey_t","https://www.youtube.com/embed/GFtF_VzhCB4?controls=0&showinfo=0&rel=0"],
+    filler_monkey_f: ["filler_monkey_f","https://www.youtube.com/embed/vINbqFH9YtA?controls=0&showinfo=0&rel=0"],
+    simple_0DT_monkey: ["simple_0DT_monkey","https://www.youtube.com/embed/dgLUPL1CMMg?controls=0&showinfo=0&rel=0"],
+    simple_0DT_pinguin: ["simple_0DT_pinguin","https://www.youtube.com/embed/SteaS--4RCg?controls=0&showinfo=0&rel=0"],
+    simple_1DT_chicken: ["simple_1DT_chicken","https://www.youtube.com/embed/TVe1M2gpAlE?controls=0&showinfo=0&rel=0"],
+    simple_1DT_monkey: ["simple_1DT_monkey","https://www.youtube.com/embed/YBEZ5vuhwKg?controls=0&showinfo=0&rel=0"],
+    simple_1DT_mouse: ["simple_1DT_mouse","https://www.youtube.com/embed/EQX4LsAodn0?controls=0&showinfo=0&rel=0"],
+    simple_1DT_sheep: ["simple_1DT_sheep","https://www.youtube.com/embed/RkTthqvxy6I?controls=0&showinfo=0&rel=0"],
+    simple_2DT_chicken: ["simple_2DT_chicken","https://www.youtube.com/embed/pfnNKyvvAIo?controls=0&showinfo=0&rel=0"],
+    simple_2DT_monkey: ["simple_2DT_monkey","https://www.youtube.com/embed/Dhvr_fvCwis?controls=0&showinfo=0&rel=0"],
+    simple_2DT_mouse: ["simple_2DT_mouse","https://www.youtube.com/embed/zLdLhMiOCDQ?controls=0&showinfo=0&rel=0"],
+    simple_2DT_rabbit: ["simple_2DT_rabbit","https://www.youtube.com/embed/0a_EHyy6BxQ?controls=0&showinfo=0&rel=0"],    
+    complex_0DT_monkey: ["complex_0DT_monkey","https://www.youtube.com/embed/Tb_xa15jFr4?controls=0&showinfo=0&rel=0"],
+    complex_0DT_pinguin: ["complex_0DT_pinguin","https://www.youtube.com/embed/2PhKJq6TWoA?controls=0&showinfo=0&rel=0"],
+    complex_1DT_chicken: ["complex_1DT_chicken","https://www.youtube.com/embed/xh3Yt-DOp_A?controls=0&showinfo=0&rel=0"],
+    complex_1DT_monkey: ["complex_1DT_monkey","https://www.youtube.com/embed/I98CZJ0R5cI?controls=0&showinfo=0&rel=0"],
+    complex_1DT_mouse: ["complex_1DT_mouse","https://www.youtube.com/embed/ms535ZuBrMQ?controls=0&showinfo=0&rel=0"],
+    complex_1DT_sheep: ["complex_1DT_sheep","https://www.youtube.com/embed/bbvl4J22fL4?controls=0&showinfo=0&rel=0"],
+    complex_2DT_chicken: ["complex_2DT_chicken","https://www.youtube.com/embed/MohcrCZX9LY?controls=0&showinfo=0&rel=0"],
+    complex_2DT_monkey: ["complex_2DT_monkey","https://www.youtube.com/embed/-qM3ebIjPr4?controls=0&showinfo=0&rel=0"],
+    complex_2DT_mouse: ["complex_2DT_mouse","https://www.youtube.com/embed/il6ythQB09A?controls=0&showinfo=0&rel=0"],
+    complex_2DT_rabbit: ["complex_2DT_rabbit","https://www.youtube.com/embed/rT03nKt_nhg?controls=0&showinfo=0&rel=0"]
 }
 
-function getFaceFile(dft) {
-  return 'images/video' + dft + '.mp4';
-}
+var filler_rabbit = [trials.filler_rabbit_f, trials.filler_rabbit_t];
+var filler_monkey = [trials.filler_monkey_f, trials.filler_monkey_t];
+var filler_pig = [trials.filler_pig_f, trials.filler_pig_t];
 
-faces = shuffle(faces);
+var simpleA = [trials.training1, trials.training2, 
+                trials.simple_1DT_chicken, trials.simple_2DT_rabbit, trials.simple_1DT_mouse, trials.simple_2DT_monkey,
+                filler_monkey[Math.floor(Math.random() * filler_monkey.length)],
+                trials.simple_0DT_pinguin, trials.simple_1DT_monkey, trials.simple_2DT_chicken,
+                filler_rabbit[Math.floor(Math.random() * filler_rabbit.length)],
+                trials.simple_0DT_monkey, trials.simple_2DT_mouse, trials.simple_1DT_sheep,
+                filler_pig[Math.floor(Math.random() * filler_pig.length)]
+               ];
 
-var totalTrials = faces.length;
+var simpleB = [trials.training1, trials.training2,
+               trials.simple_2DT_mouse, trials.simple_1DT_sheep, trials.simple_2DT_chicken, trials.simple_1DT_monkey,
+               filler_pig[Math.floor(Math.random() * filler_pig.length)],
+               trials.simple_0DT_pinguin, trials.simple_2DT_monkey, trials.simple_1DT_mouse,
+               filler_rabbit[Math.floor(Math.random() * filler_rabbit.length)],
+               trials.simple_0DT_monkey, trials.simple_1DT_chicken, trials.simple_2DT_rabbit,
+               filler_monkey[Math.floor(Math.random() * filler_monkey.length)],          
+              ];
+
+var complexA = [trials.training1, trials.training2, 
+                trials.complex_1DT_chicken, trials.complex_2DT_rabbit, trials.complex_1DT_mouse, trials.complex_2DT_monkey,
+                filler_monkey[Math.floor(Math.random() * filler_monkey.length)],
+                trials.complex_0DT_pinguin, trials.complex_1DT_monkey, trials.complex_2DT_chicken,
+                filler_rabbit[Math.floor(Math.random() * filler_rabbit.length)],
+                trials.complex_0DT_monkey, trials.complex_2DT_mouse, trials.complex_1DT_sheep,
+                filler_pig[Math.floor(Math.random() * filler_pig.length)]
+               ];
+
+var complexB = [trials.training1, trials.training2,
+               trials.complex_2DT_mouse, trials.complex_1DT_sheep, trials.complex_2DT_chicken, trials.complex_1DT_monkey,
+               filler_pig[Math.floor(Math.random() * filler_pig.length)],
+               trials.complex_0DT_pinguin, trials.complex_2DT_monkey, trials.complex_1DT_mouse,
+               filler_rabbit[Math.floor(Math.random() * filler_rabbit.length)],
+               trials.complex_0DT_monkey, trials.complex_1DT_chicken, trials.complex_2DT_rabbit,
+               filler_monkey[Math.floor(Math.random() * filler_monkey.length)],          
+              ];
+
+var conditions = [simpleA, simpleB, complexA, complexB];
+
+var condition = conditions[Math.floor(Math.random() * conditions.length)];
+
+var totalTrials = condition.length;
+
+//var faces = [];
+//var NUM_TRIALS_PER_DFT = 1; // Number of times each stimulus is shown
+//for (var i = 0; i < NUM_TRIALS_PER_DFT; i++) { // populates the list "faces" with as many stimuli names as trials needed
+//  for (var dft = 1; dft <= 15; dft++) { // gatehering the number component of the stimuli file names
+//    faces.push(dft); 
+//  }
+//}
+//
+//function getFaceFile(dft) {
+//  return 'images/video' + dft + '.mp4';
+//}
+//
+//faces = shuffle(faces);
+
+//var totalTrials = faces.length;
 
 // Initialize trial to trustworthy or attractive
 //var type = Math.random();
@@ -158,7 +235,7 @@ var experiment = {
       if (window.self == window.top | turk.workerId.length > 0) {
           $("#testMessage").html('');   // clear the test message
           $("#prog").attr("style","width:" +
-              String(100 * (1 - faces.length/totalTrials)) + "%")
+              String(100 * (1 - condition.length/totalTrials)) + "%")
           // style="width:progressTotal%"
           window.setTimeout(function() {
             $('#stage-content').show();
@@ -168,20 +245,21 @@ var experiment = {
 
           // Get the current trial - <code>shift()</code> removes the first element
           // select from our scales array and stop exp after we've exhausted all the domains
-          var face_dft = faces.shift();
+          var current_trial = condition.shift();
 
           //If the current trial is undefined, call the end function.
-          if (typeof face_dft == "undefined") {
+          if (typeof current_trial == "undefined") {
             return experiment.debriefing();
           }
 
           // Display the sentence stimuli
-          var face_filename = getFaceFile(face_dft);
-          $("#face").attr('src', face_filename);
+          // var face_filename = getFaceFile(face_dft);
+          
+          $("#face").attr('src', current_trial[1]);
 
 
           // push all relevant variables into data object
-          experiment.data.trial.push(face_dft);
+          experiment.data.trial.push(current_trial[0]);
           experiment.data.window_width.push($(window).width());
           experiment.data.window_height.push($(window).height());
 
