@@ -14,8 +14,6 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
 #loading the required packages
 library(tidyverse)
 library(bootstrap)
@@ -39,7 +37,7 @@ original_data_raw <- read_csv("../0_original_study/TYCRSC_AcqDisj.csv")
 
 ############################### Original code
 Y<-read.csv("http://semanticsarchive.net/Archive/mE4YmYwN/TYCRSC_AcqDisj.csv")
-
+View(Y)
 infos.subject<-data.frame(
 PARTICIPANT=tapply(as.character(Y$participant), Y$participant, max),
 TYPE=tapply(as.character(Y$AgeGroup), Y$participant, max),
@@ -152,6 +150,7 @@ contrasts(data$Lang)<-contr.sum(2)
 data1DT<-subset(data,Condition=="1DT")
 
 mod1DT<-glmer(response~AgeGroup+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data1DT)
+
 mod1DT0<-glmer(response~1+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data1DT)
 
 anova(mod1DT,mod1DT0)
@@ -165,6 +164,7 @@ data2DT<-subset(data,Condition=="2DT")
 mod2DT<-glmer(response~AgeGroup+Complex*Lang+(1|participant),family=binomial(link="logit"),data= data2DT)
 mod2DT0<-glmer(response~1+Complex*Lang+(1|participant),family=binomial(link="logit"),control=glmerControl(optimizer="bobyqa", optCtrl=list(maxfun=5e6)),data= data2DT)
 summary(mod1DT)
+
 anova(mod2DT0,mod2DT)
 
 ```

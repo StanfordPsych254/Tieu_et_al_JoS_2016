@@ -24,7 +24,6 @@ Array.prototype.random = function() {
   return this[random(this.length)];
 }
 
-// shuffle function - from stackoverflow?
 // shuffle ordering of argument array -- are we missing a parenthesis?
 function shuffle (a)
 {
@@ -50,42 +49,45 @@ $.urlParam = function(name){
   }
 }
 
-// ############################## Configuration settings ##############################
+// ---------------------------------- Conditions and Trial Order --------------------------------------//
+// trial names and youtube URL addresses. URL ending sets the video attributes: control=0 (no buttons), showinfo=0 (no text), rel=0, autoplay=1
 var trials = {
-    training1: ["training_ladybug_t","https://www.youtube.com/embed/WWOkUcLHtGg?controls=0&showinfo=0&rel=0"],
-    training2: ["training_sarah_f", "https://www.youtube.com/embed/4ahnw9GLyDg?controls=0&showinfo=0&rel=0"],
-    filler_rabbit_t: ["filler_rabbit_t","https://www.youtube.com/embed/BhJdqpXyE3c?controls=0&showinfo=0&rel=0"],
-    filler_rabbit_f: ["filler_rabbit_f","https://www.youtube.com/embed/6bf_dLK6hVM?controls=0&showinfo=0&rel=0"],
-    filler_pig_t: ["filler_pig_t","https://www.youtube.com/embed/Z9nrpUi0BJE?controls=0&showinfo=0&rel=0"],
-    filler_pig_f: ["filler_pig_f","https://www.youtube.com/embed/HfE-1Avyiz0?controls=0&showinfo=0&rel=0"],
-    filler_monkey_t: ["filler_monkey_t","https://www.youtube.com/embed/GFtF_VzhCB4?controls=0&showinfo=0&rel=0"],
-    filler_monkey_f: ["filler_monkey_f","https://www.youtube.com/embed/vINbqFH9YtA?controls=0&showinfo=0&rel=0"],
-    simple_0DT_monkey: ["simple_0DT_monkey","https://www.youtube.com/embed/dgLUPL1CMMg?controls=0&showinfo=0&rel=0"],
-    simple_0DT_pinguin: ["simple_0DT_pinguin","https://www.youtube.com/embed/SteaS--4RCg?controls=0&showinfo=0&rel=0"],
-    simple_1DT_chicken: ["simple_1DT_chicken","https://www.youtube.com/embed/TVe1M2gpAlE?controls=0&showinfo=0&rel=0"],
-    simple_1DT_monkey: ["simple_1DT_monkey","https://www.youtube.com/embed/YBEZ5vuhwKg?controls=0&showinfo=0&rel=0"],
-    simple_1DT_mouse: ["simple_1DT_mouse","https://www.youtube.com/embed/EQX4LsAodn0?controls=0&showinfo=0&rel=0"],
-    simple_1DT_sheep: ["simple_1DT_sheep","https://www.youtube.com/embed/RkTthqvxy6I?controls=0&showinfo=0&rel=0"],
-    simple_2DT_chicken: ["simple_2DT_chicken","https://www.youtube.com/embed/pfnNKyvvAIo?controls=0&showinfo=0&rel=0"],
-    simple_2DT_monkey: ["simple_2DT_monkey","https://www.youtube.com/embed/Dhvr_fvCwis?controls=0&showinfo=0&rel=0"],
-    simple_2DT_mouse: ["simple_2DT_mouse","https://www.youtube.com/embed/zLdLhMiOCDQ?controls=0&showinfo=0&rel=0"],
-    simple_2DT_rabbit: ["simple_2DT_rabbit","https://www.youtube.com/embed/0a_EHyy6BxQ?controls=0&showinfo=0&rel=0"],    
-    complex_0DT_monkey: ["complex_0DT_monkey","https://www.youtube.com/embed/Tb_xa15jFr4?controls=0&showinfo=0&rel=0"],
-    complex_0DT_pinguin: ["complex_0DT_pinguin","https://www.youtube.com/embed/2PhKJq6TWoA?controls=0&showinfo=0&rel=0"],
-    complex_1DT_chicken: ["complex_1DT_chicken","https://www.youtube.com/embed/xh3Yt-DOp_A?controls=0&showinfo=0&rel=0"],
-    complex_1DT_monkey: ["complex_1DT_monkey","https://www.youtube.com/embed/I98CZJ0R5cI?controls=0&showinfo=0&rel=0"],
-    complex_1DT_mouse: ["complex_1DT_mouse","https://www.youtube.com/embed/ms535ZuBrMQ?controls=0&showinfo=0&rel=0"],
-    complex_1DT_sheep: ["complex_1DT_sheep","https://www.youtube.com/embed/bbvl4J22fL4?controls=0&showinfo=0&rel=0"],
-    complex_2DT_chicken: ["complex_2DT_chicken","https://www.youtube.com/embed/MohcrCZX9LY?controls=0&showinfo=0&rel=0"],
-    complex_2DT_monkey: ["complex_2DT_monkey","https://www.youtube.com/embed/-qM3ebIjPr4?controls=0&showinfo=0&rel=0"],
-    complex_2DT_mouse: ["complex_2DT_mouse","https://www.youtube.com/embed/il6ythQB09A?controls=0&showinfo=0&rel=0"],
-    complex_2DT_rabbit: ["complex_2DT_rabbit","https://www.youtube.com/embed/rT03nKt_nhg?controls=0&showinfo=0&rel=0"]
+    training1: ["training_ladybug_t","https://www.youtube.com/embed/WWOkUcLHtGg?controls=0&showinfo=0&rel=0&autoplay=1"],
+    training2: ["training_sarah_f", "https://www.youtube.com/embed/4ahnw9GLyDg?controls=0&showinfo=0&rel=0&autoplay=1"],
+    filler_rabbit_t: ["filler_rabbit_t","https://www.youtube.com/embed/BhJdqpXyE3c?controls=0&showinfo=0&rel=0&autoplay=1"],
+    filler_rabbit_f: ["filler_rabbit_f","https://www.youtube.com/embed/6bf_dLK6hVM?controls=0&showinfo=0&rel=0&autoplay=1"],
+    filler_pig_t: ["filler_pig_t","https://www.youtube.com/embed/Z9nrpUi0BJE?controls=0&showinfo=0&rel=0&autoplay=1"],
+    filler_pig_f: ["filler_pig_f","https://www.youtube.com/embed/HfE-1Avyiz0?controls=0&showinfo=0&rel=0&autoplay=1"],
+    filler_monkey_t: ["filler_monkey_t","https://www.youtube.com/embed/GFtF_VzhCB4?controls=0&showinfo=0&rel=0&autoplay=1"],
+    filler_monkey_f: ["filler_monkey_f","https://www.youtube.com/embed/vINbqFH9YtA?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_0DT_monkey: ["simple_0DT_monkey","https://www.youtube.com/embed/dgLUPL1CMMg?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_0DT_pinguin: ["simple_0DT_pinguin","https://www.youtube.com/embed/SteaS--4RCg?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_1DT_chicken: ["simple_1DT_chicken","https://www.youtube.com/embed/TVe1M2gpAlE?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_1DT_monkey: ["simple_1DT_monkey","https://www.youtube.com/embed/YBEZ5vuhwKg?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_1DT_mouse: ["simple_1DT_mouse","https://www.youtube.com/embed/EQX4LsAodn0?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_1DT_sheep: ["simple_1DT_sheep","https://www.youtube.com/embed/RkTthqvxy6I?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_2DT_chicken: ["simple_2DT_chicken","https://www.youtube.com/embed/pfnNKyvvAIo?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_2DT_monkey: ["simple_2DT_monkey","https://www.youtube.com/embed/Dhvr_fvCwis?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_2DT_mouse: ["simple_2DT_mouse","https://www.youtube.com/embed/zLdLhMiOCDQ?controls=0&showinfo=0&rel=0&autoplay=1"],
+    simple_2DT_rabbit: ["simple_2DT_rabbit","https://www.youtube.com/embed/0a_EHyy6BxQ?controls=0&showinfo=0&rel=0&autoplay=1"],    
+    complex_0DT_monkey: ["complex_0DT_monkey","https://www.youtube.com/embed/Tb_xa15jFr4?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_0DT_pinguin: ["complex_0DT_pinguin","https://www.youtube.com/embed/2PhKJq6TWoA?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_1DT_chicken: ["complex_1DT_chicken","https://www.youtube.com/embed/xh3Yt-DOp_A?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_1DT_monkey: ["complex_1DT_monkey","https://www.youtube.com/embed/I98CZJ0R5cI?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_1DT_mouse: ["complex_1DT_mouse","https://www.youtube.com/embed/ms535ZuBrMQ?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_1DT_sheep: ["complex_1DT_sheep","https://www.youtube.com/embed/bbvl4J22fL4?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_2DT_chicken: ["complex_2DT_chicken","https://www.youtube.com/embed/MohcrCZX9LY?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_2DT_monkey: ["complex_2DT_monkey","https://www.youtube.com/embed/-qM3ebIjPr4?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_2DT_mouse: ["complex_2DT_mouse","https://www.youtube.com/embed/il6ythQB09A?controls=0&showinfo=0&rel=0&autoplay=1"],
+    complex_2DT_rabbit: ["complex_2DT_rabbit","https://www.youtube.com/embed/rT03nKt_nhg?controls=0&showinfo=0&rel=0&autoplay=1"]
 }
 
+// The original study randomly presented one of the true or false fillers
 var filler_rabbit = [trials.filler_rabbit_f, trials.filler_rabbit_t];
 var filler_monkey = [trials.filler_monkey_f, trials.filler_monkey_t];
 var filler_pig = [trials.filler_pig_f, trials.filler_pig_t];
 
+// Condition = Simple ("or"), trial order A
 var simpleA = [trials.training1, trials.training2, 
                 trials.simple_1DT_chicken, trials.simple_2DT_rabbit, trials.simple_1DT_mouse, trials.simple_2DT_monkey,
                 filler_monkey[Math.floor(Math.random() * filler_monkey.length)],
@@ -94,7 +96,7 @@ var simpleA = [trials.training1, trials.training2,
                 trials.simple_0DT_monkey, trials.simple_2DT_mouse, trials.simple_1DT_sheep,
                 filler_pig[Math.floor(Math.random() * filler_pig.length)]
                ];
-
+// Condition = Simple ("or"), trial order B
 var simpleB = [trials.training1, trials.training2,
                trials.simple_2DT_mouse, trials.simple_1DT_sheep, trials.simple_2DT_chicken, trials.simple_1DT_monkey,
                filler_pig[Math.floor(Math.random() * filler_pig.length)],
@@ -104,6 +106,7 @@ var simpleB = [trials.training1, trials.training2,
                filler_monkey[Math.floor(Math.random() * filler_monkey.length)],          
               ];
 
+// Condition = Complex ("either-or"), trial order A
 var complexA = [trials.training1, trials.training2, 
                 trials.complex_1DT_chicken, trials.complex_2DT_rabbit, trials.complex_1DT_mouse, trials.complex_2DT_monkey,
                 filler_monkey[Math.floor(Math.random() * filler_monkey.length)],
@@ -113,6 +116,7 @@ var complexA = [trials.training1, trials.training2,
                 filler_pig[Math.floor(Math.random() * filler_pig.length)]
                ];
 
+// Condition = Complex ("either-or"), trial order B
 var complexB = [trials.training1, trials.training2,
                trials.complex_2DT_mouse, trials.complex_1DT_sheep, trials.complex_2DT_chicken, trials.complex_1DT_monkey,
                filler_pig[Math.floor(Math.random() * filler_pig.length)],
@@ -122,40 +126,18 @@ var complexB = [trials.training1, trials.training2,
                filler_monkey[Math.floor(Math.random() * filler_monkey.length)],          
               ];
 
+//Set of 4 possible condition-order assignment
 var conditions = [simpleA, simpleB, complexA, complexB];
+//Randomly assign the participant to one of the conditions
+var order = Math.floor(Math.random() * conditions.length)
 
-var condition = conditions[Math.floor(Math.random() * conditions.length)];
+if (order==0 || order==2) {
+    var trial_order = "A";
+} else { var trial_order = "B"}
 
+var condition = conditions[order];
+//Total number of trials
 var totalTrials = condition.length;
-
-//var faces = [];
-//var NUM_TRIALS_PER_DFT = 1; // Number of times each stimulus is shown
-//for (var i = 0; i < NUM_TRIALS_PER_DFT; i++) { // populates the list "faces" with as many stimuli names as trials needed
-//  for (var dft = 1; dft <= 15; dft++) { // gatehering the number component of the stimuli file names
-//    faces.push(dft); 
-//  }
-//}
-//
-//function getFaceFile(dft) {
-//  return 'images/video' + dft + '.mp4';
-//}
-//
-//faces = shuffle(faces);
-
-//var totalTrials = faces.length;
-
-// Initialize trial to trustworthy or attractive
-//var type = Math.random();
-//if (type >= 0.5) {
-//  type = 'attractive';
-//  $('.attractiveness-instr').show();
-//  $('.trustworthy-instr').hide();
-//} else {
-//  type = 'trustworthy';
-  $('.attractiveness-instr').hide();
-  $('.trustworthy-instr').show();
-//}
-
 
 // ############################## The Experiment Code and Functions ##############################
 
@@ -164,27 +146,29 @@ showSlide("instructions");
 
 var experiment = {
 
-// The data structure that records the responses to be sent to mTurk
+// DATA: The data structure that records the responses to be sent to mTurk
     data: {
-//      type: [],
-      age: [],
-      gender: [],
-      education: [],
-//      race: [],
-      trial: [], // what trial/video was presented to the participant
-      rating: [], // response
-      elapsed_ms: [], // time taken to provide an answer
-      num_errors: [], // number of times participant attempted to go to the next slide without providing an answer
-      expt_aim: [], // participant's comments on the aim of the study
-      expt_gen: [], // participant's general comments
-      user_agent: [],
-      window_width: [],
-      window_height: [],
+        audioTest: [], //the word "language" we asked participants to type in as an audio test
+        age: [],
+        gender: [],
+        education: [],
+        version: [],
+        trial: [], // what trial/video was presented to the participant
+        response: [], // response
+        elapsed_ms: [], // time taken to provide an answer
+        num_errors: [], // number of times participant attempted to go to the next slide without providing an answer
+        expt_aim: [], // participant's comments on the aim of the study
+        expt_gen: [], // participant's general comments
+        language: [], // what is the native language of the participant
+        user_agent: [],
+        window_width: [],
+        window_height: [],
     },
 
     start_ms: 0,  // time current trial started ms
     num_errors: 0,    // number of errors so far in current trial
-
+    
+    
 // END FUNCTION: The function to call when the experiment has ended
     end: function() {
       showSlide("finished");
@@ -193,7 +177,7 @@ var experiment = {
       }, 1500);
     },
 
-// LOG RESPONSE
+// LOG FUNCTION: the function that records the responses
     log_response: function() {
       var response_logged = false;
       var elapsed = Date.now() - experiment.start_ms;
@@ -204,7 +188,7 @@ var experiment = {
       // Loop through radio buttons
       for (i = 0; i < radio.length; i++) {
         if (radio[i].checked) {
-          experiment.data.rating.push(radio[i].value);
+          experiment.data.response.push(radio[i].value);
           experiment.data.elapsed_ms.push(elapsed);
           experiment.data.num_errors.push(experiment.num_errors);
           response_logged = true;
@@ -274,20 +258,15 @@ var experiment = {
 
     // submitcomments function
     submit_comments: function() {
-//      var races = document.getElementsByName("race[]");
-//      for (i = 0; i < races.length; i++) {
-//        if (races[i].checked) {
-//          experiment.data.race.push(races[i].value);
-//        }
-//      }
-      experiment.data.age.push(document.getElementById("age").value);
-      experiment.data.gender.push(document.getElementById("gender").value);
-      experiment.data.education.push(document.getElementById("education").value);
-      experiment.data.expt_aim.push(document.getElementById("expthoughts").value);
-      experiment.data.expt_gen.push(document.getElementById("expcomments").value);
-//      experiment.data.type.push(type);
-      experiment.data.user_agent.push(window.navigator.userAgent);
-      experiment.end();
+        experiment.data.age.push(document.getElementById("age").value);
+        experiment.data.gender.push(document.getElementById("gender").value);
+        experiment.data.education.push(document.getElementById("education").value);
+        experiment.data.expt_aim.push(document.getElementById("expthoughts").value);
+        experiment.data.expt_gen.push(document.getElementById("expcomments").value);
+        experiment.data.language.push(document.getElementById("explanguage").value);
+        experiment.data.user_agent.push(window.navigator.userAgent);
+        experiment.data.version.push(trial_order);
+        experiment.end();
     }
 }
 
@@ -306,10 +285,4 @@ $(function() {
     },
     submitHandler: experiment.submit_comments
   });
-//  $('#race_group input[value=no_answer]').click(function() {
-//    $('#race_group input').not('input[value=no_answer]').attr('checked', false);
-//  });
-//  $('#race_group input').not('input[value=no_answer]').click(function() {
-//    $('#race_group input[value=no_answer]').attr('checked', false);
-//  });
 });

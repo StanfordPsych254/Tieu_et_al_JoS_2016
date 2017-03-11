@@ -1,5 +1,5 @@
 
-<!-------------------------------------- ## Preamble -------------------------------------------->
+<!----------------------------------- ## Preamble ------------------------------------>
 <html>
     
 <head>
@@ -21,166 +21,56 @@
   <br>
   <img src="images/stanford.png" alt="Stanford University">
   <h3 id='logo-text'>Stanford Language and Cognition Lab</h3>
-  <div class="block-text trustworthy-instr">
-    <p>Watch the instruction video. When done, click START to begin the study. </p>
-  </div>
-        <div align="center" id="ytplayer">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/flg4OSEX8zo?controls=0&showinfo=0&rel=0"></iframe>
+    
+    <div class="block-text">
+        <p>Welcome! Please consider participating in this study only if you are a native spaker of English. Make sure your audio is enabled and the volume is up. Watch the video below and type the word you heard in the text area below the video. </p>
     </div>
-<!--
-    <div class="block-text attractiveness-instr">
-  <p>Many times we meet strangers for the first time and form our first impression
-  based on their faces.  There are faces that look attractive and there are faces
-  that look unattractive.</p>
-  <p>In this experiment different faces will be presented to
-  you and you will be required to judge their attractiveness level.  Judgment will
-  be done using a 1 (Definitely not attractive) to 9 (Definitely attractive)
-  scale.</p>
-  </div>
+    
+    <div align="center">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/KSRSO2tDkVo?controls=0&showinfo=0&rel=0"></iframe>
+    </div>
+    
+    <div>
+        <br>
+        <textarea id="audioTest" style="width:20%"></textarea>
+    </div>
 
-  <p class="block-text">
-  There are no right or wrong answers and you are required to answer as soon as
-  you can, after the face is presented.
-  </p>
--->
-
-  <button type="button" onclick="this.blur(); experiment.next()">START</button>
+  <button type="button" onclick="this.blur(); experiment.data.audioTest.push(document.getElementById('audioTest').value); showSlide('instructions1')">Next</button>
   
   <p class="block-text"><br> <b> Note: you won't be able to preview this HIT before accepting it because it's so short. </b></p>
   
-  <p class="block-text" id="legal">By answering the following questions, you are participating in a study being performed by cognitive scientists in the Stanford Department of Psychology. If you have questions about this research, please contact us at <a href="mailto://languagecoglab@gmail.com.">languagecoglab@gmail.com</a>. You must be  at least 18 years old to participate. Your participation in this research is voluntary. You may decline to answer any or all of the following questions. You may decline further participation, at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you. Note however that we have recently been made aware that your public Amazon.com profile can be accessed via your worker ID if you do not choose to opt out. If you would like to opt out of this feature, you may follow instructions available <a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=16465241">here</a>.</p>
+  <p class="block-text" id="legal">
+      
+      By answering the following questions, you are participating in a study being performed by cognitive scientists in the Stanford Department of Psychology. If you have questions about this research, please contact us at <a href="mailto://stanfordpsych254@gmail.com">stanfordpsych254@gmail.com</a>. You must be at least 18 years old to participate. Your participation in this research is voluntary. You may decline to answer any or all of the following questions. You may decline further participation, at any time, without adverse consequences. Your anonymity is assured; the researchers who have requested your participation will not receive any personal information about you. We have recently been made aware that your public Amazon.com profile can be accessed via your worker ID if you do not choose to opt out. If you would like to opt out of this feature, you may follow instructions available <a href="https://www.amazon.com/gp/help/customer/display.html?nodeId=16465241">here</a>.
+      
+    </p>
 </div>
 
-<!------------------------------------- Introduction Video ---------------------------------------->
+<!------------------------------------- Instructions ---------------------------------------->
     
 <div class="slide" id="instructions1">
 
     <!--Instruction text-->
    
-    <p class="block-text"> Watch the introduction video below. When done, answer the question under the video, then click "Next" to see an example trial.
+    <p class="block-text"> Watch the instruction video below. Then, click START to begin the study.            
     </p>
 
     <!--Introduction Video-->
 
     <div align="center">
-        <video id="training1_vid1" width="65%" height="65%" src="images/video1.mp4" preload="auto" controls="true"> 
-        </video>
+        <iframe id="introVid" width="560" height="315" src="https://www.youtube.com/embed/flg4OSEX8zo?version=3&enablejsapi=1&controls=0&showinfo=0&rel=0"></iframe>
     </div>
-
-    <!--prompt sentence-->
-    
-    <div align="center" class="prompt">
-        <p> Was Raffie Ready?</p>
-    </div>
-    
-    <!--judgement buttons-->
 
     <table align = "center" class="judgements">
-        <tr>
-            <td align="center"><label><input type="radio" name="judgment" value="0">No</label></td>
-            <td align="center"><label><input type="radio" name="judgment" value="1">Yes</label></td>      
-        </tr>
         <tr> <td colspan="2" align="center"> 
-            <button type="button" onclick="this.blur(); showSlide('instructions2')">Next</button>
+            <button type="button" onclick="this.blur(); experiment.next()">START</button>
             </td>
         </tr>
     </table>
     
 </div>
 
-
-<!------------------------------------- Instruction Slide 2 ---------------------------------------->
-    
-<div class="slide" id="instructions2">
-
-    <!--Instruction text-->
-   
-    <p class="block-text"> Here is an example trial.
-    </p>
-
-    <!--Training Video 1-->
-
-    <div align="center" id="ytplayer">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/flg4OSEX8zo?controls=0&showinfo=0&rel=0"></iframe>
-<!--
-        <iframe id="training1_vid1" width="65%" height="65%" src="https://www.youtube.com/embed/XGSy3_Czz8k"> 
-        </iframe>
--->
-    </div>
-
-    <!--prompt sentence-->
-    
-    <div align="center" class="prompt">
-        <p> Was Raffie right?</p>
-    </div>
-    
-    <!--judgement buttons-->
-
-    <table align = "center" class="judgements">
-        <tr>
-            <td align="center"><label><input type="radio" name="judgment" value="0">No</label></td>
-            <td align="center"><label><input type="radio" name="judgment" value="1">Yes</label></td>      
-        </tr>
-        <tr> <td colspan="2" align="center"> 
-            <button type="button" onclick="this.blur(); showSlide('instructions3')">Next</button>
-            </td>
-        </tr>
-    </table>
-    
-</div>
-
-<!------------------------------------ Instruction Slide 3 -------------------------------------------->
-
-<div class="slide" id="instructions3">
-    
-    <!--Instruction text-->
-   
-    <p class="block-text"> Another example.
-    </p>
-
-    <!--Training Video 2-->
-
-    <div align="center">
-        <video id="training1_vid2" width="65%" height="65%" src="images/video2.mp4" preload="auto" controls> 
-        </video>
-    </div>
-
-    <!--prompt sentence-->
-    
-    <div align="center" class="prompt">
-        <p> Did Raffie guess right?</p>
-    </div>
-    
-    <!--judgement buttons-->
-
-    <table align = "center" class="judgements">
-        <tr>
-            <td align="center"><label><input type="radio" name="judgment" value="0">No</label></td>
-            <td align="center"><label><input type="radio" name="judgment" value="1">Yes</label></td>      
-        </tr>
-        <tr> <td colspan="2" align="center"> 
-            <button type="button" onclick="this.blur(); showSlide('instructions4')">Next</button>
-            </td>
-        </tr>
-    </table>
-
-</div>
-
-<!------------------------------------ Instruction Slide 3 -------------------------------------------->
-
-<div class="slide" id="instructions4">
-    
-    <!--Instruction text-->
-   
-    <p class="block-text" id="text-only"> Great! We are done with our examples! Click Start to begin the study!
-    </p>
-    
-    <div align="center">
-    <button type="button" onclick="this.blur(); experiment.next()">Start</button>
-    </div>
-</div>
-
-<!------------------------------------- The stage slides ----------------------------------------------->
+<!------------------------------------- The trial slides ----------------------------------------------->
 <div class="slide" id="stage">
   
 <div class="progress">
@@ -214,12 +104,12 @@
   <table align="center"><tr>
   <td align="center">
   <button type="button" id="nextButton" onClick="experiment.log_response()">Next</button>
-         </td> 
+      </td> 
       <tr><td align="center">
       <div id="testMessage"> </div>
-      </td></tr>
-
- </table>
+      </td>
+      </tr>
+    </table>
  </div>
 </div>
 
@@ -315,7 +205,7 @@
        <label id="gender-error" class="error" for="gender">Please choose an option</label>
       </p>
       <select name="gender" id="gender" form="demographics" required>
-        <option value="">Choose a gender</option>
+        <option value="">Please choose an option</option>
         <option value="female">Female</option>
         <option value="male">Male</option>
         <option value="other">Other</option>
@@ -329,32 +219,16 @@
        <label id="education-error" class="error" for="education">Please choose an option</label>
      </p>
      <select name="education" id="education" form="demographics" required>
-       <option value="">Choose a level</option>
+       <option value="">Choose an option</option>
        <option value="Yes">Yes</option>
        <option value="No">No</option>
-<!--       <option value="no_answer">Prefer not to answer</option>-->
      </select>
    </div>
 
-<!--
-   <div class="question">
-     <p>
-       <b>What is your race? Please check all that apply.</b>
-       <label id="race[]-error" class="error" for="race[]">Please choose an option</label>
-     </p>
-     <fieldset form="demographics" id="race_group">
-       <input type="checkbox" name="race[]" value="amInd"> American Indian or Alaskan Native</input><br />
-       <input type="checkbox" name="race[]" value="asian"> Asian</input><br/>
-       <input type="checkbox" name="race[]" value="natHaw"> Native Hawaiian or US Pacific Islander</input><br/>
-       <input type="checkbox" name="race[]" value="black"> Black/African American</input><br/>
-       <input type="checkbox" name="race[]" value="white"> White</input><br/>
-       <input type="checkbox" name="race[]" value="other"> Other</input><br/>
-       <input type="checkbox" name="race[]" value="no_answer"> Prefer not to answer</option>
-     </fieldset>
+    <div class="question">
+     <p><b>What is your native language?</b></p>
+     <textarea type="text" id="explanguage" style="width:50%" name="explang" rows="1" required></textarea>
    </div>
--->
-
-   <!-- TODO: Log where they live? -->
 
    <div class="question">
      <p><b>What in your opinion was the goal of the experiment?</b></p>
@@ -362,7 +236,7 @@
    </div>
 
    <div class="question">
-     <p><b>If you have any comment about the experiment, please write it here.</b></p>
+     <p><b>If you have any comment about the experiment, please write it here. Did you happen to run into any issues?</b></p>
      <textarea type="textarea" id="expcomments" style="width:100%" name="expgen"></textarea>
    </div>
   
@@ -376,30 +250,11 @@
 <!--------------------------------------------- The finish slide. ---------------------------------------------->
 <div class="slide" id="finished">
   <p class="block-text">
-  Thank you for participating in the study. The purpose of the study is to understand how children learn the meaning of the logical word "or". In this study, we ask participants to judge whether statements with "or" were right or wrong depending on what happened in the story. If you would like to learn more about this topic, please email masoudj@stanford.edu for some references.
+  Thank you for participating in the study. The purpose of the study is to understand how children learn the meaning of the logical word "or". In this study, we ask participants to judge whether statements with "or" were right or wrong depending on what happened in the story. If you would like to know more about this topic or if you have any questions or concerns, please don't hesitate to contact the lead researcher at <a href="mailto://stanfordpsych254@gmail.com">masoudj@stanford.edu</a>.
   </p>
 </div>
 
 <script src="study1.js"></script>
-
-<!-- preload -->
-<div style="width:0;height:0;overflow:hidden">
-   <video src="images/video1.mp4" preload="auto"/>
-   <video src="images/video2.mp4" preload="auto"/>
-   <video src="images/video3.mp4" preload="auto"/>
-   <video src="images/video4.mp4" preload="auto"/>
-   <video src="images/video5.mp4" preload="auto"/>
-   <video src="images/video6.mp4" preload="auto"/>
-   <video src="images/video7.mp4" preload="auto"/>
-   <video src="images/video8.mp4" preload="auto"/>
-   <video src="images/video9.mp4" preload="auto"/>
-   <video src="images/video10.mp4" preload="auto"/>
-   <video src="images/video11.mp4" preload="auto"/>
-   <video src="images/video12.mp4" preload="auto"/>
-   <video src="images/video13.mp4" preload="auto"/>
-   <video src="images/video14.mp4" preload="auto"/>
-   <video src="images/video15.mp4" preload="auto"/>
-</div>
 
 </body>
 

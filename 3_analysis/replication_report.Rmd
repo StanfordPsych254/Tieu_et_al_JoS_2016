@@ -1,0 +1,263 @@
+---
+title: "Replication: 'On the Role of Alternatives in the Acquisition of Simple and Complex Disjunctions in French and Japanese' by Tieu et al (2016, Journal of Semantics)"
+author: "Masoud Jasbi (Department of Linguistics, Stanford University)"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+bibliography: library.bib
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+---
+
+```{r setup, include=FALSE}
+#loading the required packages
+library(tidyverse)
+library(bootstrap)
+library(ggthemes)
+library(forcats)
+library(xtable)
+library(lme4)
+library(knitr)
+library(pwr)
+library(effsize)
+
+# Functions for bootstrapping confidence intervals:
+theta <- function(x,xdata) {mean(xdata[x])}
+ci.low <- function(x) {
+  quantile(bootstrap(1:length(x),1000,theta,x)$thetastar,.025)}
+ci.high <- function(x) {
+  quantile(bootstrap(1:length(x),1000,theta,x)$thetastar,.975)}
+```
+
+##Introduction
+
+@tieu2016 investigated children and adults' interpretation of the french simple (*...ou...*) and complex (*soit ... soit ...*) disjunction constructions as well as the Japanese ones (*...ka...*/*ka...ka...*). They concluded that: "*The main findings from our experiment are that both French- and Japanese-speaking children interpreted the simple and complex disjunctions either inclusively or conjunctively; in contrast, adults generally accessed exclusive readings of both disjunctions.*" This replication study investigates the second claim: that adults interpret simple and complex disjunction as exclusive disjunction. The major difference between this replicaton and the original study is that this replication study is done in English rather than French and Japanese. Since the original paper claims that the finding holds crosslinguistically, the replication in English is warranted. 
+
+##Methods
+
+###Materials
+
+> There were three conditions involving disjunctive test sentences such as "The hen pushed the bus or the airplane". In the target ‘1-disjunct-true’ (1DT) condition, the outcome of the story was such that only one of the disjuncts was verified, for
+example, the hen pushed only the bus. In the target ‘2-disjunct-true’ (2DT) condition, the outcome of the story was such that both disjuncts were verified, for example, the hen would push both the bus and the airplane. Participants also saw a ‘0-disjunct-true’ (0DT) control condition, in which the hen would push neither object, as well as filler sentences that did not contain disjunction. All test and control sentences can be found in the Appendix. Each participant saw four repetitions of both the 1DT condition and 2DT conditions, two repetitions of the 0DT control condition, and three disjunction-less fillers, for a total of 13 experimental trials. These 13 trials, presented in one of two pseudorandomized orders, were preceded by two training items: on one practice trial, the puppet made a guess that turned out to be clearly verified, and on the second, the puppet made a guess that turned out to be clearly wrong. The purpose of the practice trials was to show that the puppet was capable of making both good and bad guesses, and more generally to familiarize the participants with the task.
+
+###Procedure	
+
+> We used a modified Truth Value Judgment Task (Crain & Thornton 1998, 2000) in Prediction mode, presented to the participants in the form of a ‘guessing game’. Participants were introduced to a puppet named Raffie the Giraffe, and were told that they would play a game with her on the computer. Pre-recorded videos of the puppet’s utterances created the ruse that the puppet was participating live via webcam. The reason we chose to run the task in Prediction mode rather than the typical Description mode, where the puppet describes an event that has already unfolded, was meant to make the use of disjunction felicitous. In particular, the use of disjunction typically gives rise to an ignorance inference that the speaker does not know which of the two disjuncts holds. If uttered in Description mode then, the puppet’s assertion could have potentially given rise to infelicity, given the puppet had just witnessed the relevant event unfold. Each trial consisted of three stages (see Figure 1). First, the participant would see a picture and hear a short introduction about the character in the picture. In the second step, the puppet would appear on the screen to make a guess about what would happen next in the story.8 At this stage, children would also be prompted to repeat the puppet’s sentence, to ensure that they had correctly heard the statement. In the final scene, participants saw the outcome, and had to decide if the puppet had guessed correctly or not. Participants had to stamp under a happy or sad face on a scorecard to indicate their responses. We also elicited follow-up justifications after affirmative and negative responses, in order to ascertain children’s reasoning for their responses. All children were tested individually in a quiet room away from their peers. Their responses were videorecorded for later analysis. Adult control participants were also tested one at a time, using exactly the same materials and procedure.
+
+The online version of the study used in this replication can be accessed [https://web.stanford.edu/~masoudj/tieu_replication/study1.html](https://web.stanford.edu/~masoudj/tieu_replication/study1.html).
+
+### Original Data and Exclusion
+
+Below you can see the original paper's data wrangling procedure and exclusion criteria. 
+
+```{r original_data_wrangling}
+# Original code from Tieu et al (2016). Comments by Masoud Jasbi.
+Y<-read.csv("http://semanticsarchive.net/Archive/mE4YmYwN/TYCRSC_AcqDisj.csv")
+
+# Creating a long-form data-frame for subjects to apply the exclusion criterion 
+infos.subject<-data.frame(
+PARTICIPANT=tapply(as.character(Y$participant), Y$participant, max),
+TYPE=tapply(as.character(Y$AgeGroup), Y$participant, max),
+LANG=tapply(as.character(Y$Lang), Y$participant, max),
+AGE=tapply(Y$ageD, Y$participant, max),
+SITE=tapply(as.character(Y$exp.site), Y$participant, max),
+VERSION=tapply(as.character(Y$version), Y$participant, max),
+COMPLEX=tapply((Y$Complex), Y$participant, max)
+)
+
+# Create a column with the proportion of correct responses in the control conditions
+infos.subject$Correct<-tapply(Y$correct[Y$Condition=="Control"],Y$participant[Y$Condition=="Control"],mean,na.rm=T)
+
+# Store IDs of subjects that were correct in control trials less than %70 of the time
+excluded<-infos.subject$PARTICIPANT[infos.subject$Correct<.7]
+
+# Remove training items and excluded participants stored in "excluded"
+Y<-subset(Y,Condition!="Training" & !participant%in%excluded)
+
+# Remove the control trials and "both" type responses (e.g., "She was right and she wasn't right").
+original_data<-subset(Y,Condition!="Control"&response!=0.5) #variable name originally "data"
+```
+
+###Power Analysis
+
+```{r}
+original_data$Complex <- as.factor(original_data$Complex)
+levels(original_data$Complex) <- c("Simple","Complex") #explicitly naming the disjunction types
+original_data <- rename(original_data, Disjunct=Complex) #changing the column name to Disjunct
+
+#Summarize the data to have proportions of yes/no responses for each condition and disjunct type in each language
+summary_data <-  
+  original_data %>%
+  group_by(participant, Lang, AgeGroup, Disjunct, Condition, response) %>%
+  summarise(counts = n()) %>% #count the number of Yes and No responses per participant
+  spread(response, counts) %>% #make a column out of the coutns of response types
+  replace(is.na(.), 0) %>% 
+  mutate(total = `0` + `1`) %>%
+  gather(trial, counts, `0`, `1`) %>%
+  mutate(prop = counts / total) %>%
+    group_by(Lang, AgeGroup, Disjunct, Condition, trial) %>%
+    summarize(cih = ci.high(prop),
+              cil = ci.low(prop),
+              prop = mean(prop))
+```
+
+The table below shows the proportion of adults who said that the puppet's guess was right for each language, disjunction type, and condition.
+
+```{r}
+adult_table <-
+summary_data %>%
+  filter(AgeGroup=="adult", trial==1) %>%
+  select(Lang, Disjunct, Condition, prop)
+
+kable(adult_table, digits = 2)
+```
+
+The differences between 1DT and 2DT trials are quite drastic. The code below calculates the effect size for these trials and uses it to estimate the number of participants needed to achieve %95 power in the replication study. 
+
+```{r}
+subject_means <-
+original_data %>%
+group_by(participant, Lang, AgeGroup, Disjunct, Condition, response) %>%
+summarise(counts = n()) %>% #count the rows
+spread(response, counts) %>%
+replace(is.na(.), 0) %>%
+mutate(total = `0` + `1`) %>%
+gather(trial, counts, `0`, `1`) %>%
+mutate(prop = counts / total) %>%
+  filter(AgeGroup=="adult", trial==1, Lang=="French")
+
+one_dt<- subject_means %>%
+  filter(Condition=="1DT")
+two_dt<- subject_means %>%
+  filter(Condition=="2DT")
+
+cohens_d <- cohen.d(one_dt$prop, two_dt$prop)$estimate
+
+pwr.t.test(n = NULL, d = cohens_d, sig.level = 0.05, power = 0.95, 
+    type = "paired")
+```
+
+The effect size is `r round(cohens_d,2)`, and the analysis to achieve 95% power suggests we can collect data from 3 participants. However, to be cautious I still stick to the original sample size of 20.
+
+###Planned Sample
+
+I plan to run the study with 20 adult native speakers of English. I will use Amazon Mechanical Turk to recruit participants which restricts the participants to the US and American English speakers (mostly).
+
+###Analysis Plan
+
+The original study was interested in the differences between the interpretations of adults and children. Here I am focusing on adults only. The key analysis is the difference in mean proportions of "yes" responses in 1DT vs. 2DT trials. I calculate this using the paired t-test below.
+
+```{r}
+t.test(one_dt$prop, two_dt$prop, paired = T)
+```
+
+###Differences from Original Study
+
+This replication differs with the original study in two main ways. First the language under investigation and second the medium of testing. The original study was conducted in French and Japanese. This study is conducted in English. In the original study, adult participants responded to the experimental questions in a lab setting. In this study I use Amazon Mechanical Turk and recruit participants using the web. I do not expect these differences to affect the results siginficantly. 
+
+### Methods Addendum (Post Data Collection)
+
+You can comment this section out prior to final report with data collection.
+
+#### Actual Sample
+  Sample size, demographics, data exclusions based on rules spelled out in analysis plan
+
+#### Differences from pre-data collection methods plan
+  Any differences from what was described as the original plan, or “none”.
+
+
+##Results
+
+
+### Data preparation
+
+Data preparation following the analysis plan.
+	
+```{r include=F}
+####Import data
+adult_rawdata <- read_csv("../2_processed_data/adult_data.csv")
+
+#### Data exclusion / filtering
+#exclude participants that did not watch the full movie
+
+#### Prepare data for analysis - create columns etc.
+adult_summary <-
+adult_rawdata %>%
+  separate(trials, c("Disjunct", "Condition", "Item"), sep = "_", remove = TRUE) %>%
+  filter(Disjunct=="simple" | Disjunct=="complex", Condition!="0DT") %>%
+  group_by(workerid, Disjunct, Condition, response) %>%
+  summarise(counts = n()) %>% #count the number of Yes and No responses per participant
+  spread(response, counts) %>% #make a column out of the coutns of response types
+  replace(is.na(.), 0) %>% 
+  mutate(total = `0` + `1`) %>%
+  gather(trial, counts, `0`, `1`) %>%
+  mutate(prop = counts / total) %>%
+    group_by(Disjunct, Condition, trial) %>%
+    summarize(cih = ci.high(prop),
+              cil = ci.low(prop),
+              prop = mean(prop))
+```
+
+### Confirmatory analysis
+
+The analyses as specified in the analysis plan.  
+
+```{r figure, results="asis", echo=FALSE, fig.align="center", fig.cap="Error bars show 95\\% confidence intervals.", fig.width=6, fig.height=4}
+
+ggplot(filter(summary_data, trial=="1"), 
+       aes(x=Condition, y=prop,fill=AgeGroup)) + 
+  geom_bar(stat="identity", width = 0.6, position="dodge") + 
+  geom_linerange(aes(ymax = cih, ymin = cil), position = position_dodge(width = 0.6)) + 
+  facet_grid(Lang~Disjunct) + 
+#  guides(fill=FALSE) + 
+  labs(title = "", x = "", y = "") + 
+  theme_few() + 
+  theme(text = element_text(size = 16)) +
+  scale_fill_solarized()
+```
+
+```{r adult_figure, results="asis", echo=FALSE, fig.align="center", fig.cap="Replication plot for adults with Pilot A data.", fig.width=6, fig.height=4}
+ggplot(filter(adult_summary, trial=="1"), 
+       aes(x=Condition, y=prop)) + 
+  geom_bar(stat="identity", width = 0.6, position="dodge") + 
+  scale_fill_solarized() + 
+    geom_linerange(aes(ymax = cih, ymin = cil), position = position_dodge(width = 0.6)) + 
+  facet_grid(~Disjunct) + 
+  labs(title = "", x = "", y = "") + 
+  theme_few() + 
+  theme(text = element_text(size = 16))
+```
+
+```{r}
+subject_means <-
+original_data %>%
+group_by(participant, Lang, AgeGroup, Disjunct, Condition, response) %>%
+summarise(counts = n()) %>% #count the rows
+spread(response, counts) %>%
+replace(is.na(.), 0) %>%
+mutate(total = `0` + `1`) %>%
+gather(trial, counts, `0`, `1`) %>%
+mutate(prop = counts / total) %>%
+  filter(AgeGroup=="adult", trial==1, Lang=="French")
+
+one_dt<- subject_means %>%
+  filter(Condition=="1DT")
+two_dt<- subject_means %>%
+  filter(Condition=="2DT")
+```
+
+###Exploratory analyses
+
+Any follow-up analyses desired (not required).  
+
+## Discussion
+
+### Summary of Replication Attempt
+
+Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+
+### Commentary
+
+Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
