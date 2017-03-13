@@ -1,31 +1,91 @@
-"","workerid","age","gender","education","trials","response","duration","comment_aim","comment_general"
-"1","ARRIVJMQ5TB7C","28","male","Yes","training_ladybug_t","1",37822,"nothing","blah"
-"2","ARRIVJMQ5TB7C","28","male","Yes","training_sarah_f","0",33733,"nothing","blah"
-"3","ARRIVJMQ5TB7C","28","male","Yes","simple_1DT_chicken","1",43520,"nothing","blah"
-"4","ARRIVJMQ5TB7C","28","male","Yes","simple_2DT_rabbit","0",39743,"nothing","blah"
-"5","ARRIVJMQ5TB7C","28","male","Yes","simple_1DT_mouse","1",49336,"nothing","blah"
-"6","ARRIVJMQ5TB7C","28","male","Yes","simple_2DT_monkey","1",33920,"nothing","blah"
-"7","ARRIVJMQ5TB7C","28","male","Yes","filler_monkey_f","0",28606,"nothing","blah"
-"8","ARRIVJMQ5TB7C","28","male","Yes","simple_0DT_pinguin","0",36976,"nothing","blah"
-"9","ARRIVJMQ5TB7C","28","male","Yes","simple_1DT_monkey","1",37224,"nothing","blah"
-"10","ARRIVJMQ5TB7C","28","male","Yes","simple_2DT_chicken","0",39074,"nothing","blah"
-"11","ARRIVJMQ5TB7C","28","male","Yes","filler_rabbit_f","0",27836,"nothing","blah"
-"12","ARRIVJMQ5TB7C","28","male","Yes","simple_0DT_monkey","0",39954,"nothing","blah"
-"13","ARRIVJMQ5TB7C","28","male","Yes","simple_2DT_mouse","0",37492,"nothing","blah"
-"14","ARRIVJMQ5TB7C","28","male","Yes","simple_1DT_sheep","1",52711,"nothing","blah"
-"15","ARRIVJMQ5TB7C","28","male","Yes","filler_pig_f","1",28791,"nothing","blah"
-"16","A3LJXU6XVTMP94","20","female","Yes","training_ladybug_t","1",4642,"",""
-"17","A3LJXU6XVTMP94","20","female","Yes","training_sarah_f","0",2966,"",""
-"18","A3LJXU6XVTMP94","20","female","Yes","complex_1DT_chicken","1",4983,"",""
-"19","A3LJXU6XVTMP94","20","female","Yes","complex_2DT_rabbit","0",3230,"",""
-"20","A3LJXU6XVTMP94","20","female","Yes","complex_1DT_mouse","1",2520,"",""
-"21","A3LJXU6XVTMP94","20","female","Yes","complex_2DT_monkey","0",2385,"",""
-"22","A3LJXU6XVTMP94","20","female","Yes","filler_monkey_t","1",9678,"",""
-"23","A3LJXU6XVTMP94","20","female","Yes","complex_0DT_pinguin","0",2875,"",""
-"24","A3LJXU6XVTMP94","20","female","Yes","complex_1DT_monkey","1",3311,"",""
-"25","A3LJXU6XVTMP94","20","female","Yes","complex_2DT_chicken","0",2712,"",""
-"26","A3LJXU6XVTMP94","20","female","Yes","filler_rabbit_f","0",3008,"",""
-"27","A3LJXU6XVTMP94","20","female","Yes","complex_0DT_monkey","0",6016,"",""
-"28","A3LJXU6XVTMP94","20","female","Yes","complex_2DT_mouse","0",21962,"",""
-"29","A3LJXU6XVTMP94","20","female","Yes","complex_1DT_sheep","1",6008,"",""
-"30","A3LJXU6XVTMP94","20","female","Yes","filler_pig_f","0",2952,"",""
+,participant,gender,age,Lang,logical_training,trials,response,duration,AgeGroup,aim,comments
+1,anon0,male,34,English,Yes,training_ladybug_t,1,38507,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+2,anon0,male,34,English,Yes,training_sarah_f,0,31292,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+3,anon0,male,34,English,Yes,complex_2DT_mouse,0,43450,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+4,anon0,male,34,English,Yes,complex_1DT_sheep,1,41822,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+5,anon0,male,34,English,Yes,complex_2DT_chicken,0,46067,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+6,anon0,male,34,English,Yes,complex_1DT_monkey,1,31850,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+7,anon0,male,34,English,Yes,filler_pig_t,1,24910,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+8,anon0,male,34,English,Yes,complex_0DT_pinguin,0,35739,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+9,anon0,male,34,English,Yes,complex_2DT_monkey,0,32121,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+10,anon0,male,34,English,Yes,complex_1DT_mouse,1,35319,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+11,anon0,male,34,English,Yes,filler_rabbit_t,1,38257,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+12,anon0,male,34,English,Yes,complex_0DT_monkey,0,32980,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+13,anon0,male,34,English,Yes,complex_1DT_chicken,1,36995,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+14,anon0,male,34,English,Yes,complex_2DT_rabbit,0,30598,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+15,anon0,male,34,English,Yes,filler_monkey_t,1,25353,adult,Determine if people perceived performing two tasks as sufficient with and either/or statement.,no issues
+16,anon1,male,42,English,Yes,training_ladybug_t,1,38523,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+17,anon1,male,42,English,Yes,training_sarah_f,0,33923,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+18,anon1,male,42,English,Yes,simple_2DT_mouse,0,36079,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+19,anon1,male,42,English,Yes,simple_1DT_sheep,1,37667,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+20,anon1,male,42,English,Yes,simple_2DT_chicken,0,38631,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+21,anon1,male,42,English,Yes,simple_1DT_monkey,1,37311,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+22,anon1,male,42,English,Yes,filler_pig_t,1,26946,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+23,anon1,male,42,English,Yes,simple_0DT_pinguin,0,34152,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+24,anon1,male,42,English,Yes,simple_2DT_monkey,0,31006,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+25,anon1,male,42,English,Yes,simple_1DT_mouse,1,35292,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+26,anon1,male,42,English,Yes,filler_rabbit_t,1,27401,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+27,anon1,male,42,English,Yes,simple_0DT_monkey,0,32088,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+28,anon1,male,42,English,Yes,simple_1DT_chicken,1,39716,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+29,anon1,male,42,English,Yes,simple_2DT_rabbit,0,32656,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+30,anon1,male,42,English,Yes,filler_monkey_t,1,27728,adult,It was about making logical decisions based on the statements presented.,Thank you. No issues.
+31,anon2,female,38,English,No,training_ladybug_t,1,41678,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+32,anon2,female,38,English,No,training_sarah_f,0,33821,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+33,anon2,female,38,English,No,simple_2DT_mouse,0,45058,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+34,anon2,female,38,English,No,simple_1DT_sheep,1,45873,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+35,anon2,female,38,English,No,simple_2DT_chicken,0,41136,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+36,anon2,female,38,English,No,simple_1DT_monkey,1,39740,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+37,anon2,female,38,English,No,filler_pig_f,0,32208,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+38,anon2,female,38,English,No,simple_0DT_pinguin,0,38604,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+39,anon2,female,38,English,No,simple_2DT_monkey,0,34010,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+40,anon2,female,38,English,No,simple_1DT_mouse,1,43086,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+41,anon2,female,38,English,No,filler_rabbit_f,0,37285,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+42,anon2,female,38,English,No,simple_0DT_monkey,0,38404,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+43,anon2,female,38,English,No,simple_1DT_chicken,1,41417,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+44,anon2,female,38,English,No,simple_2DT_rabbit,0,37436,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+45,anon2,female,38,English,No,filler_monkey_t,1,31511,adult,"To see if the correct answer was chosen when ""or"" was used and then both items were rolled down the hill, painted, etc.","No issues, thank you."
+46,anon3,male,38,English,No,training_ladybug_t,1,36168,adult,about a childrens book,
+47,anon3,male,38,English,No,training_sarah_f,0,34066,adult,about a childrens book,
+48,anon3,male,38,English,No,simple_1DT_chicken,0,42749,adult,about a childrens book,
+49,anon3,male,38,English,No,simple_2DT_rabbit,0,34008,adult,about a childrens book,
+50,anon3,male,38,English,No,simple_1DT_mouse,1,42686,adult,about a childrens book,
+51,anon3,male,38,English,No,simple_2DT_monkey,0,36104,adult,about a childrens book,
+52,anon3,male,38,English,No,filler_monkey_t,1,27621,adult,about a childrens book,
+53,anon3,male,38,English,No,simple_0DT_pinguin,1,40532,adult,about a childrens book,
+54,anon3,male,38,English,No,simple_1DT_monkey,1,33006,adult,about a childrens book,
+55,anon3,male,38,English,No,simple_2DT_chicken,0,37899,adult,about a childrens book,
+56,anon3,male,38,English,No,filler_rabbit_t,1,27095,adult,about a childrens book,
+57,anon3,male,38,English,No,simple_0DT_monkey,0,33723,adult,about a childrens book,
+58,anon3,male,38,English,No,simple_2DT_mouse,0,33499,adult,about a childrens book,
+59,anon3,male,38,English,No,simple_1DT_sheep,1,43789,adult,about a childrens book,
+60,anon3,male,38,English,No,filler_pig_f,0,26434,adult,about a childrens book,
+61,anon4,male,25,English,No,training_ladybug_t,1,44848,adult,It was interesting.,it was fine.
+62,anon4,male,25,English,No,training_sarah_f,0,44232,adult,It was interesting.,it was fine.
+63,anon4,male,25,English,No,simple_1DT_chicken,1,19192,adult,It was interesting.,it was fine.
+64,anon4,male,25,English,No,simple_2DT_rabbit,1,16902,adult,It was interesting.,it was fine.
+65,anon4,male,25,English,No,simple_1DT_mouse,1,19246,adult,It was interesting.,it was fine.
+66,anon4,male,25,English,No,simple_2DT_monkey,0,19784,adult,It was interesting.,it was fine.
+67,anon4,male,25,English,No,filler_monkey_f,0,15953,adult,It was interesting.,it was fine.
+68,anon4,male,25,English,No,simple_0DT_pinguin,0,22263,adult,It was interesting.,it was fine.
+69,anon4,male,25,English,No,simple_1DT_monkey,1,12825,adult,It was interesting.,it was fine.
+70,anon4,male,25,English,No,simple_2DT_chicken,0,24775,adult,It was interesting.,it was fine.
+71,anon4,male,25,English,No,filler_rabbit_t,1,18568,adult,It was interesting.,it was fine.
+72,anon4,male,25,English,No,simple_0DT_monkey,0,35121,adult,It was interesting.,it was fine.
+73,anon4,male,25,English,No,simple_2DT_mouse,0,12431,adult,It was interesting.,it was fine.
+74,anon4,male,25,English,No,simple_1DT_sheep,1,16001,adult,It was interesting.,it was fine.
+75,anon4,male,25,English,No,filler_pig_f,0,28167,adult,It was interesting.,it was fine.
+76,anon5,male,26,English,Yes,training_ladybug_t,1,38449,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+77,anon5,male,26,English,Yes,training_sarah_f,0,34903,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+78,anon5,male,26,English,Yes,simple_1DT_chicken,1,41158,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+79,anon5,male,26,English,Yes,simple_2DT_rabbit,0,33576,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+80,anon5,male,26,English,Yes,simple_1DT_mouse,1,41740,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+81,anon5,male,26,English,Yes,simple_2DT_monkey,0,32158,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+82,anon5,male,26,English,Yes,filler_monkey_t,1,28335,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+83,anon5,male,26,English,Yes,simple_0DT_pinguin,0,37052,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+84,anon5,male,26,English,Yes,simple_1DT_monkey,1,37241,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+85,anon5,male,26,English,Yes,simple_2DT_chicken,0,39172,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+86,anon5,male,26,English,Yes,filler_rabbit_f,0,29330,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+87,anon5,male,26,English,Yes,simple_0DT_monkey,0,35209,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+88,anon5,male,26,English,Yes,simple_2DT_mouse,0,34949,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+89,anon5,male,26,English,Yes,simple_1DT_sheep,1,42882,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)
+90,anon5,male,26,English,Yes,filler_pig_t,1,28686,adult,To determine if logic was applied to two parts or just one part if determining that someone is right.,No comments or issues. That was adorable. :)

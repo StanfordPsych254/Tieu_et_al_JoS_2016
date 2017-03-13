@@ -8,30 +8,29 @@ output: html_document
 ```{r cars}
 library(rjson)
 library(tidyverse)
+```
 
+```{r}
 files <- dir("../1_raw_data/", pattern =".json")
 adult_data <- data.frame()
 
 for (file in files) {
-  json_data <- fromJSON(file=paste("../1_raw_data/", file, sep=""))
+  jd <- fromJSON(paste(readLines(paste("../1_raw_data/", file, sep="")), collapse=""))
+  id <- data_frame(participant = jd$WorkerId,
+                  gender = jd$answers$data$gen,
+                  age = jd$answers$data$age,
+                  Lang = jd$answers$data$language,
+                  logical_training = jd$answers$data$education,
+                  trials = jd$answers$data$trial,
+                  response = jd$answers$data$response,
+                  duration = jd$answers$data$elapsed_ms,
+                  AgeGroup = "adult",
+                  aim = jd$answers$data$expt_aim,
+                  comments = jd$answers$data$expt_gen
+                  )
   
-  id <- data.frame(
-    workerid = rep(json_data$WorkerId,15),
-    age = rep(json_data$answers$data$age,15),
-#    langauge = rep(json_data$answers$data$langauge,15),
-    gender = rep(json_data$answers$data$gender,15),
-    education = rep(json_data$answers$data$education,15),
-    trials = json_data$answers$data$trial,
-    response = json_data$answers$data$response,
-    duration = json_data$answers$data$elapsed_ms,
-    comment_aim = rep(json_data$answers$data$expt_aim,15),
-    comment_general = rep(json_data$answers$data$expt_gen,15))
-
   adult_data <- bind_rows(adult_data, id)
 }
-
-adult_data[,"AgeGroup"] <- "adult"
-rename(adult_data, participant=workerid)
 
 write.csv(adult_data, "../2_processed_data/adult_data.csv")
 ```

@@ -11,7 +11,7 @@ output:
       collapsed: false
 ---
 
-```{r setup, include=FALSE}
+```{r packages, include=FALSE}
 #loading the required packages
 library(tidyverse)
 library(bootstrap)
@@ -22,7 +22,9 @@ library(lme4)
 library(knitr)
 library(pwr)
 library(effsize)
+```
 
+```{r bootstrap, include=FALSE}
 # Functions for bootstrapping confidence intervals:
 theta <- function(x,xdata) {mean(xdata[x])}
 ci.low <- function(x) {
@@ -50,7 +52,9 @@ The online version of the study used in this replication can be accessed [https:
 
 ### Original Data and Exclusion
 
-Below you can see the original paper's data wrangling procedure and exclusion criteria. 
+Below you can see the original paper's data wrangling code and the exclusion procedure. The exclusion criteria as stated in the original paper:
+
+>These numbers exclude three Japanese and five French children who failed to pass the control trials. An additional two French children were excluded as it was reported that their first language was English. Finally, two Japanese adults were excluded for making at least two errors on control trials.
 
 ```{r original_data_wrangling}
 # Original code from Tieu et al (2016). Comments by Masoud Jasbi.
@@ -78,18 +82,42 @@ Y<-subset(Y,Condition!="Training" & !participant%in%excluded)
 
 # Remove the control trials and "both" type responses (e.g., "She was right and she wasn't right").
 original_data<-subset(Y,Condition!="Control"&response!=0.5) #variable name originally "data"
+
+# my code here:
+original_data$Complex <- as.factor(original_data$Complex)
+levels(original_data$Complex) <- c("Simple","Complex") #explicitly naming the disjunction types
+original_data <- rename(original_data, Disjunct=Complex) #changing the column name to Disjunct
 ```
 
 ###Power Analysis
 
-```{r}
-original_data$Complex <- as.factor(original_data$Complex)
-levels(original_data$Complex) <- c("Simple","Complex") #explicitly naming the disjunction types
-original_data <- rename(original_data, Disjunct=Complex) #changing the column name to Disjunct
+```{r English_data, warning=FALSE, message=FALSE}
+# Load the replication English data
+english_rawdata <- read_csv("../2_processed_data/adult_data.csv")
+
+# pick the right rows and columns for analysis
+english_analysis_data <- 
+  english_rawdata %>%
+  separate(trials, c("Disjunct","Condition", "item"), sep="_") %>% #create the disjunct and condition columns
+  filter(Condition=="1DT" | Condition=="2DT") %>% #get rid of controls and training trials
+  select(participant, Lang, Disjunct, Condition, response, AgeGroup)
+  
+english_analysis_data$Disjunct <- as.factor(english_analysis_data$Disjunct)
+#Capitalize simple and complex!
+english_analysis_data$Disjunct <- fct_recode(english_analysis_data$Disjunct, Simple = "simple", Complex = "complex")
+
+#pick the columns you want for the analysis in the original data set
+original_analysis_data <-
+  original_data %>%
+  select(participant, Lang, Disjunct, Condition, response, AgeGroup)
+
+#create a unified dataset of English-replicated and original data
+analysis_data <-
+  bind_rows(english_analysis_data, original_analysis_data)
 
 #Summarize the data to have proportions of yes/no responses for each condition and disjunct type in each language
 summary_data <-  
-  original_data %>%
+  analysis_data %>%
   group_by(participant, Lang, AgeGroup, Disjunct, Condition, response) %>%
   summarise(counts = n()) %>% #count the number of Yes and No responses per participant
   spread(response, counts) %>% #make a column out of the coutns of response types
@@ -105,10 +133,10 @@ summary_data <-
 
 The table below shows the proportion of adults who said that the puppet's guess was right for each language, disjunction type, and condition.
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 adult_table <-
 summary_data %>%
-  filter(AgeGroup=="adult", trial==1) %>%
+  filter(AgeGroup=="adult", trial==1, Lang!="English") %>%
   select(Lang, Disjunct, Condition, prop)
 
 kable(adult_table, digits = 2)
@@ -177,27 +205,12 @@ Data preparation following the analysis plan.
 	
 ```{r include=F}
 ####Import data
-adult_rawdata <- read_csv("../2_processed_data/adult_data.csv")
 
 #### Data exclusion / filtering
 #exclude participants that did not watch the full movie
 
 #### Prepare data for analysis - create columns etc.
-adult_summary <-
-adult_rawdata %>%
-  separate(trials, c("Disjunct", "Condition", "Item"), sep = "_", remove = TRUE) %>%
-  filter(Disjunct=="simple" | Disjunct=="complex", Condition!="0DT") %>%
-  group_by(workerid, Disjunct, Condition, response) %>%
-  summarise(counts = n()) %>% #count the number of Yes and No responses per participant
-  spread(response, counts) %>% #make a column out of the coutns of response types
-  replace(is.na(.), 0) %>% 
-  mutate(total = `0` + `1`) %>%
-  gather(trial, counts, `0`, `1`) %>%
-  mutate(prop = counts / total) %>%
-    group_by(Disjunct, Condition, trial) %>%
-    summarize(cih = ci.high(prop),
-              cil = ci.low(prop),
-              prop = mean(prop))
+
 ```
 
 ### Confirmatory analysis
@@ -218,18 +231,6 @@ ggplot(filter(summary_data, trial=="1"),
   scale_fill_solarized()
 ```
 
-```{r adult_figure, results="asis", echo=FALSE, fig.align="center", fig.cap="Replication plot for adults with Pilot A data.", fig.width=6, fig.height=4}
-ggplot(filter(adult_summary, trial=="1"), 
-       aes(x=Condition, y=prop)) + 
-  geom_bar(stat="identity", width = 0.6, position="dodge") + 
-  scale_fill_solarized() + 
-    geom_linerange(aes(ymax = cih, ymin = cil), position = position_dodge(width = 0.6)) + 
-  facet_grid(~Disjunct) + 
-  labs(title = "", x = "", y = "") + 
-  theme_few() + 
-  theme(text = element_text(size = 16))
-```
-
 ```{r}
 subject_means <-
 original_data %>%
@@ -248,16 +249,14 @@ two_dt<- subject_means %>%
   filter(Condition=="2DT")
 ```
 
-###Exploratory analyses
-
-Any follow-up analyses desired (not required).  
+<!--###Exploratory analyses Any follow-up analyses desired (not required).-->
 
 ## Discussion
 
 ### Summary of Replication Attempt
 
-Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+<!--Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.-->
 
 ### Commentary
 
-Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
+<!--Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.-->
