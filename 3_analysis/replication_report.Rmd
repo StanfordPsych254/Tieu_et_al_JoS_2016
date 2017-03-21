@@ -187,7 +187,23 @@ This replication differs with the original study in two main ways. First the lan
 
 ### Methods Addendum (Post Data Collection)
 
-You can comment this section out prior to final report with data collection.
+### Participants
+Table X summarizes the participant information for both the original study and the replication reported here. 
+
+```{r adults_patterns, results="asis", echo=FALSE}
+participant_table <-
+  analysis_data %>%
+  group_by(Lang, AgeGroup, Disjunct) %>% # group participants based on language and age (adult vs. child)
+  summarise(N = length(unique(participant))) %>% # number of participants in each group
+  spread(AgeGroup,N) %>%
+  rename(Adult = adult, Child=child, Language=Lang)
+rownames(participant_table) <- NULL
+# create a table for the number of participants in each group
+
+kable(participant_table,
+                      caption = "The number of participants for each langauge and disjunct type.")
+
+```
 
 #### Actual Sample
   Sample size, demographics, data exclusions based on rules spelled out in analysis plan
@@ -232,7 +248,7 @@ ggplot(filter(summary_data, trial=="1"),
 ```
 
 ```{r}
-subject_means <-
+subject_means_eng <-
 original_data %>%
 group_by(participant, Lang, AgeGroup, Disjunct, Condition, response) %>%
 summarise(counts = n()) %>% #count the rows
@@ -241,12 +257,14 @@ replace(is.na(.), 0) %>%
 mutate(total = `0` + `1`) %>%
 gather(trial, counts, `0`, `1`) %>%
 mutate(prop = counts / total) %>%
-  filter(AgeGroup=="adult", trial==1, Lang=="French")
+  filter(AgeGroup=="adult", trial==1, Lang=="English")
 
-one_dt<- subject_means %>%
+one_dt_eng<- subject_means %>%
   filter(Condition=="1DT")
-two_dt<- subject_means %>%
+two_dt_eng<- subject_means %>%
   filter(Condition=="2DT")
+
+t.test(one_dt_eng$prop, two_dt_eng$prop, paired = T)
 ```
 
 <!--###Exploratory analyses Any follow-up analyses desired (not required).-->
