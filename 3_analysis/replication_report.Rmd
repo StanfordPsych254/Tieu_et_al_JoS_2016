@@ -35,9 +35,15 @@ ci.high <- function(x) {
 
 ##Introduction
 
-@tieu2016 investigated children and adults' interpretation of the french simple (*...ou...*) and complex (*soit ... soit ...*) disjunction constructions as well as the Japanese ones (*...ka...*/*ka...ka...*). They concluded that: "*The main findings from our experiment are that both French- and Japanese-speaking children interpreted the simple and complex disjunctions either inclusively or conjunctively; in contrast, adults generally accessed exclusive readings of both disjunctions.*" This replication study investigates the second claim: that adults interpret simple and complex disjunction as exclusive disjunction. The major difference between this replicaton and the original study is that this replication study is done in English rather than French and Japanese. Since the original paper claims that the finding holds crosslinguistically, the replication in English is warranted. 
+@tieu2016 investigated children and adults' interpretation of the french simple (*...ou...*) and complex (*soit ... soit ...*) disjunction constructions as well as the Japanese ones (*...ka...*/*ka...ka...*). They concluded the following: 
+
+> The main findings from our experiment are that both French- and Japanese-speaking children interpreted the simple and complex disjunctions either inclusively or conjunctively; in contrast, adults generally accessed exclusive readings of both disjunctions. 
+
+This replication study investigates the second claim: that adults interpret simple and complex disjunction as exclusive disjunction. There are two major differences between this replicaton and the original study: 1. this replication study is done in English. The original study was in French and Japanese. 2. this replication is web-based and uses Amazon's Mechanical Turk for recruiting. The original study was conducted in a lab and recruited university students.
 
 ##Methods
+
+Here I report the original paper's explanation of the materials and procedure. You can see the online version of the study at [https://web.stanford.edu/~masoudj/tieu_replication/study1.html](https://web.stanford.edu/~masoudj/tieu_replication/study1.html).
 
 ###Materials
 
@@ -48,17 +54,19 @@ example, the hen pushed only the bus. In the target ‘2-disjunct-true’ (2DT) 
 
 > We used a modified Truth Value Judgment Task (Crain & Thornton 1998, 2000) in Prediction mode, presented to the participants in the form of a ‘guessing game’. Participants were introduced to a puppet named Raffie the Giraffe, and were told that they would play a game with her on the computer. Pre-recorded videos of the puppet’s utterances created the ruse that the puppet was participating live via webcam. The reason we chose to run the task in Prediction mode rather than the typical Description mode, where the puppet describes an event that has already unfolded, was meant to make the use of disjunction felicitous. In particular, the use of disjunction typically gives rise to an ignorance inference that the speaker does not know which of the two disjuncts holds. If uttered in Description mode then, the puppet’s assertion could have potentially given rise to infelicity, given the puppet had just witnessed the relevant event unfold. Each trial consisted of three stages (see Figure 1). First, the participant would see a picture and hear a short introduction about the character in the picture. In the second step, the puppet would appear on the screen to make a guess about what would happen next in the story.8 At this stage, children would also be prompted to repeat the puppet’s sentence, to ensure that they had correctly heard the statement. In the final scene, participants saw the outcome, and had to decide if the puppet had guessed correctly or not. Participants had to stamp under a happy or sad face on a scorecard to indicate their responses. We also elicited follow-up justifications after affirmative and negative responses, in order to ascertain children’s reasoning for their responses. All children were tested individually in a quiet room away from their peers. Their responses were videorecorded for later analysis. Adult control participants were also tested one at a time, using exactly the same materials and procedure.
 
-The online version of the study used in this replication can be accessed [https://web.stanford.edu/~masoudj/tieu_replication/study1.html](https://web.stanford.edu/~masoudj/tieu_replication/study1.html).
-
 ### Original Data and Exclusion
 
-Below you can see the original paper's data wrangling code and the exclusion procedure. The exclusion criteria as stated in the original paper:
+The exclusion criteria as stated in the original paper:
 
 >These numbers exclude three Japanese and five French children who failed to pass the control trials. An additional two French children were excluded as it was reported that their first language was English. Finally, two Japanese adults were excluded for making at least two errors on control trials.
 
+In addition to the exclusion criteria in the original paper, in the replication study, I exclude participants that spent less than 20 seconds watching the experimental videos. The length of each video is at least 28 seconds.
+
+Below you can see the original paper's data wrangling code and the exclusion procedure.
+
 ```{r original_data_wrangling}
 # Original code from Tieu et al (2016). Comments by Masoud Jasbi.
-Y<-read.csv("http://semanticsarchive.net/Archive/mE4YmYwN/TYCRSC_AcqDisj.csv")
+Y<-read.csv("../0_original_study/TYCRSC_AcqDisj.csv")
 
 # Creating a long-form data-frame for subjects to apply the exclusion criterion 
 infos.subject<-data.frame(
@@ -89,35 +97,12 @@ levels(original_data$Complex) <- c("Simple","Complex") #explicitly naming the di
 original_data <- rename(original_data, Disjunct=Complex) #changing the column name to Disjunct
 ```
 
-###Power Analysis
+Below, I provide a summary of the data in the orignal study. The table shows the proportion of adults who said that the puppet's guess was right for each language, disjunction type, and condition.
 
-```{r English_data, warning=FALSE, message=FALSE}
-# Load the replication English data
-english_rawdata <- read_csv("../2_processed_data/adult_data.csv")
-
-# pick the right rows and columns for analysis
-english_analysis_data <- 
-  english_rawdata %>%
-  separate(trials, c("Disjunct","Condition", "item"), sep="_") %>% #create the disjunct and condition columns
-  filter(Condition=="1DT" | Condition=="2DT") %>% #get rid of controls and training trials
-  select(participant, Lang, Disjunct, Condition, response, AgeGroup)
-  
-english_analysis_data$Disjunct <- as.factor(english_analysis_data$Disjunct)
-#Capitalize simple and complex!
-english_analysis_data$Disjunct <- fct_recode(english_analysis_data$Disjunct, Simple = "simple", Complex = "complex")
-
-#pick the columns you want for the analysis in the original data set
-original_analysis_data <-
-  original_data %>%
-  select(participant, Lang, Disjunct, Condition, response, AgeGroup)
-
-#create a unified dataset of English-replicated and original data
-analysis_data <-
-  bind_rows(english_analysis_data, original_analysis_data)
-
+```{r original_data, warning=FALSE, message=FALSE}
 #Summarize the data to have proportions of yes/no responses for each condition and disjunct type in each language
-summary_data <-  
-  analysis_data %>%
+summary_originaldata <-  
+  original_data %>%
   group_by(participant, Lang, AgeGroup, Disjunct, Condition, response) %>%
   summarise(counts = n()) %>% #count the number of Yes and No responses per participant
   spread(response, counts) %>% #make a column out of the coutns of response types
@@ -129,18 +114,32 @@ summary_data <-
     summarize(cih = ci.high(prop),
               cil = ci.low(prop),
               prop = mean(prop))
-```
 
-The table below shows the proportion of adults who said that the puppet's guess was right for each language, disjunction type, and condition.
-
-```{r, message=FALSE, warning=FALSE}
 adult_table <-
-summary_data %>%
+summary_originaldata %>%
   filter(AgeGroup=="adult", trial==1, Lang!="English") %>%
   select(Lang, Disjunct, Condition, prop)
 
 kable(adult_table, digits = 2)
 ```
+
+### Participants
+The table below summarizes the participant information for the original study. 
+
+```{r adults_patterns, results="asis", echo=FALSE}
+participant_table <-
+  original_data %>%
+  group_by(Lang, AgeGroup, Disjunct) %>% # group participants based on language and age (adult vs. child)
+  summarise(N = length(unique(participant))) %>% # number of participants in each group
+  spread(AgeGroup,N) %>%
+  rename(Adult = adult, Child=child, Language=Lang)
+rownames(participant_table) <- NULL
+# create a table for the number of participants in each group
+
+kable(participant_table)
+```
+
+###Power Analysis
 
 The differences between 1DT and 2DT trials are quite drastic. The code below calculates the effect size for these trials and uses it to estimate the number of participants needed to achieve %95 power in the replication study. 
 
@@ -185,12 +184,61 @@ t.test(one_dt$prop, two_dt$prop, paired = T)
 
 This replication differs with the original study in two main ways. First the language under investigation and second the medium of testing. The original study was conducted in French and Japanese. This study is conducted in English. In the original study, adult participants responded to the experimental questions in a lab setting. In this study I use Amazon Mechanical Turk and recruit participants using the web. I do not expect these differences to affect the results siginficantly. 
 
-### Methods Addendum (Post Data Collection)
+##Results
 
-### Participants
-Table X summarizes the participant information for both the original study and the replication reported here. 
+### Data preparation
 
-```{r adults_patterns, results="asis", echo=FALSE}
+Here I load the replication data and store them in one data frame with the data from the original study.
+
+```{r English_data, warning=FALSE, message=FALSE}
+# Load the English English data
+english_rawdata <- read_csv("../2_processed_data/adult_data.csv")
+
+# exclude participants that spent less than 20 seconds on a trial
+english_rawdata <- filter(english_rawdata, duration>20000)
+# No participant was excluded
+
+# pick the right rows and columns for analysis
+english_analysis_data <- 
+  english_rawdata %>%
+  separate(trials, c("Disjunct","Condition", "item"), sep="_") %>% #create the disjunct and condition columns
+  filter(Condition=="1DT" | Condition=="2DT") %>% #get rid of controls and training trials
+  select(participant, Lang, Disjunct, Condition, response, AgeGroup)
+  
+english_analysis_data$Disjunct <- as.factor(english_analysis_data$Disjunct)
+#Capitalize simple and complex!
+english_analysis_data$Disjunct <- fct_recode(english_analysis_data$Disjunct, Simple = "simple", Complex = "complex")
+
+#pick the columns you want for the analysis in the original data set
+original_analysis_data <-
+  original_data %>%
+  select(participant, Lang, Disjunct, Condition, response, AgeGroup)
+
+#create a unified dataset of English-replicated and original data
+analysis_data <-
+  bind_rows(english_analysis_data, original_analysis_data)
+
+#Summarize the data to have proportions of yes/no responses for each condition and disjunct type in each language
+summary_data <-  
+  analysis_data %>%
+  group_by(participant, Lang, AgeGroup, Disjunct, Condition, response) %>%
+  summarise(counts = n()) %>% #count the number of Yes and No responses per participant
+  spread(response, counts) %>% #make a column out of the counts of response types
+  replace(is.na(.), 0) %>% 
+  mutate(total = `0` + `1`) %>%
+  gather(trial, counts, `0`, `1`) %>%
+  mutate(prop = counts / total) %>%
+    group_by(Lang, AgeGroup, Disjunct, Condition, trial) %>%
+    summarize(cih = ci.high(prop),
+              cil = ci.low(prop),
+              prop = mean(prop))
+```
+
+#### Actual Sample
+
+The table below shows the number of participants in each condition of the replication. No participant in this replication met the criteria for exclusion.
+
+```{r participants, results="asis", echo=FALSE}
 participant_table <-
   analysis_data %>%
   group_by(Lang, AgeGroup, Disjunct) %>% # group participants based on language and age (adult vs. child)
@@ -200,38 +248,12 @@ participant_table <-
 rownames(participant_table) <- NULL
 # create a table for the number of participants in each group
 
-kable(participant_table,
-                      caption = "The number of participants for each langauge and disjunct type.")
-
-```
-
-#### Actual Sample
-  Sample size, demographics, data exclusions based on rules spelled out in analysis plan
-
-#### Differences from pre-data collection methods plan
-  Any differences from what was described as the original plan, or “none”.
-
-
-##Results
-
-
-### Data preparation
-
-Data preparation following the analysis plan.
-	
-```{r include=F}
-####Import data
-
-#### Data exclusion / filtering
-#exclude participants that did not watch the full movie
-
-#### Prepare data for analysis - create columns etc.
-
+kable(filter(participant_table, Language=="ENGLISH"))
 ```
 
 ### Confirmatory analysis
 
-The analyses as specified in the analysis plan.  
+The plot below shows the percentage of "yes" responses in the original (French and Japanese), as well as the replication study (ENGLISH). The replication in English shows the same pattern observed in the original study. Adult accepted a disjunction when only one of the disjuncts was true but rejected it when both disjuncts were true.
 
 ```{r figure, results="asis", echo=FALSE, fig.align="center", fig.cap="Error bars show 95\\% confidence intervals.", fig.width=6, fig.height=4}
 
@@ -246,6 +268,7 @@ ggplot(filter(summary_data, trial=="1"),
   theme(text = element_text(size = 16)) +
   scale_fill_solarized()
 ```
+
 
 ```{r}
 subject_means_eng <-
@@ -264,17 +287,15 @@ one_dt_eng<- subject_means %>%
 two_dt_eng<- subject_means %>%
   filter(Condition=="2DT")
 
-t.test(one_dt_eng$prop, two_dt_eng$prop, paired = T)
+cohens_d_eng <- cohen.d(one_dt_eng$prop, two_dt_eng$prop)$estimate
+
+final_test <- t.test(one_dt_eng$prop, two_dt_eng$prop, paired = T)
 ```
 
-<!--###Exploratory analyses Any follow-up analyses desired (not required).-->
+A paired t-test shows the difference in mean proportions of "yes" responses in 1DT and 2DT trials as significat ($t_{`r final_test$parameter`}$= `r round(final_test$statistic,2)`, $p<0.001$).
 
 ## Discussion
 
-### Summary of Replication Attempt
+The results obtained by @tieu2016 for French and Japanese speaking adults were replicated here for English speaking adults: they accepted disjunctive sentences such as "The chicken pushed the bus or the plane" when only one of the events were true and rejected them when both were true. The replication data suggests that in English, complex disjunction of the form "either A or B" may carry more exclusivity implication than simple disjunction like "A or B". However, this effect is small and requires more participants than collected for the purposes of this replication.
 
-<!--Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.-->
-
-### Commentary
-
-<!--Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.-->
+##Bibliography

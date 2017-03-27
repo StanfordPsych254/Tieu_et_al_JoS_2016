@@ -19,7 +19,7 @@ for (file in files) {
   id <- data_frame(participant = jd$WorkerId,
                   gender = jd$answers$data$gen,
                   age = jd$answers$data$age,
-                  Lang = jd$answers$data$language,
+                  Lang = toupper(jd$answers$data$language),
                   logical_training = jd$answers$data$education,
                   trials = jd$answers$data$trial,
                   response = jd$answers$data$response,
